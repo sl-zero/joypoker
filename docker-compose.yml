@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: poker
+      POSTGRES_PASSWORD: poker
+      POSTGRES_DB: poker_editor
+    volumes:
+      - poker_pg:/var/lib/postgresql/data
+
+volumes:
+  poker_pg:

@@ -1,0 +1,17 @@
+{
+  "gameType": "doudizhu",
+  "allowRocket": true,
+  "bombDoublesScore": true,
+  "springBonus": true,
+  "playerCount": 4,
+  "deckCount": 2,
+  "bidStyle": "grab_landlord",
+  "baseScore": 1,
+  "allowFourWithTwoSingles": true,
+  "allowFourWithTwoPairs": true,
+  "straightMinLength": 5,
+  "showBottomCardsAfterLandlord": false,
+  "antiSpring": true,
+  "allowLoosePlaneAttachments": true,
+  "custom": {}
+}

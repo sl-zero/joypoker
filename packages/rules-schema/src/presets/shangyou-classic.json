@@ -1,0 +1,15 @@
+{
+  "gameType": "shangyou",
+  "teamMode": false,
+  "playerCount": 4,
+  "deckCount": 2,
+  "firstLeadRule": "hearts3",
+  "mustFollowPattern": true,
+  "allowBomb": true,
+  "allowJokerBomb": true,
+  "mustAnnounceLastCount": false,
+  "scoringMode": "rank_points",
+  "headScore": 3,
+  "lastPlaceMultiplier": 2,
+  "custom": {}
+}

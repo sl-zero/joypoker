@@ -1,0 +1,9 @@
+{
+  "gameType": "blackjack",
+  "dealerHitsSoft17": false,
+  "decks": 1,
+  "blackjackPayout": 1.5,
+  "maxSplits": 1,
+  "doubleAfterSplit": false,
+  "custom": {}
+}

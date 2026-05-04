@@ -1,0 +1,17 @@
+{
+  "gameType": "texas",
+  "smallBlind": 1,
+  "bigBlind": 2,
+  "tableFormat": "full_ring",
+  "maxPlayers": 9,
+  "limitType": "no_limit",
+  "fixedBetMultiplierOfBb": 2,
+  "anteType": "none",
+  "anteMultiplierOfBb": 0,
+  "straddleAllowed": false,
+  "minBuyInBb": 40,
+  "maxBuyInBb": 200,
+  "allowRunItTwice": false,
+  "exposeCardsAtShowdown": true,
+  "custom": {}
+}

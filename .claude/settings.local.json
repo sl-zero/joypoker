@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node \"web项目开发/generate-v4.js\")",
+      "Bash(node *)",
+      "Bash(npm install *)"
+    ]
+  }
+}

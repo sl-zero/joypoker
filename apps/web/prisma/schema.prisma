@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  passwordHash  String?
+  createdAt     DateTime       @default(now())
+  ownedRooms    Room[]         @relation("RoomOwner")
+  roomMembers   RoomMember[]
+  chatMessages  ChatMessage[]
+}
+
+model Room {
+  id           String        @id @default(cuid())
+  code         String        @unique
+  name         String?
+  ownerId      String
+  gameType     String
+  ruleSnapshot Json
+  status       String        @default("waiting")
+  createdAt    DateTime      @default(now())
+  owner        User          @relation("RoomOwner", fields: [ownerId], references: [id])
+  members      RoomMember[]
+  records      GameRecord[]
+  messages     ChatMessage[]
+}
+
+model RoomMember {
+  id         String @id @default(cuid())
+  roomId     String
+  userId     String
+  seatOrder  Int?
+  totalScore Int    @default(0)
+  room       Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+}
+
+model GameRecord {
+  id           String   @id @default(cuid())
+  roomId       String
+  ruleSnapshot Json
+  scores       Json
+  createdAt    DateTime @default(now())
+  room         Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  body      String
+  createdAt DateTime @default(now())
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

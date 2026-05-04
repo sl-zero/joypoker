@@ -1,0 +1,12 @@
+node_modules
+.next
+dist
+.turbo
+.env
+.env.local
+apps/web/prisma/*.db
+apps/web/prisma/*.db-journal
+apps/game-server/.env
+*.log
+.DS_Store
+prisma/migrations/**/migration_lock.toml

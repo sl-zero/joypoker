@@ -1,0 +1,18 @@
+{
+  "name": "poker-editor-monorepo",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "postinstall": "npm run build -w @poker/cards-core && npm run build -w @poker/rules-schema",
+  "scripts": {
+    "dev:web": "npm run dev -w @poker/web",
+    "dev:game": "npm run dev -w @poker/game-server",
+    "build": "npm run build -w @poker/cards-core && npm run build -w @poker/rules-schema && npm run build -w @poker/web && npm run build -w @poker/game-server",
+    "db:generate": "cd apps/web && npx prisma generate",
+    "db:migrate": "cd apps/web && npx prisma migrate deploy",
+    "db:migrate:dev": "cd apps/web && npx prisma migrate dev",
+    "db:push": "cd apps/web && npx prisma db push"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
