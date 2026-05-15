@@ -69,10 +69,14 @@ const TIP_HEAD_SCORE = "每局最先出完牌的玩家获得的基础分。";
 function Tip({ text }: { text: string }) {
   return (
     <span className="relative inline-flex group ml-1 align-middle">
-      <span className="inline-flex items-center justify-center w-[15px] h-[15px] rounded-full border border-[var(--muted)] text-[var(--muted)] text-[10px] leading-none font-bold cursor-help">
+      <button
+        type="button"
+        aria-label={text}
+        className="inline-flex items-center justify-center w-[15px] h-[15px] rounded-full border border-[var(--muted)] text-[var(--muted)] text-[10px] leading-none font-bold cursor-help focus:outline-none focus:border-[var(--accent)]"
+      >
         ?
-      </span>
-      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-56 bg-[var(--surface)] border border-white/10 rounded-lg px-3 py-2 text-xs text-[var(--text)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 leading-relaxed">
+      </button>
+      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-56 bg-[var(--surface)] border border-white/10 rounded-lg px-3 py-2 text-xs text-[var(--text)] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity pointer-events-none z-10 leading-relaxed">
         {text}
       </span>
     </span>
