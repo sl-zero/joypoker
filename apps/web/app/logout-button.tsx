@@ -1,0 +1,49 @@
+"use client";
+
+import { signOut } from "next-auth/react";
+import { useState } from "react";
+
+export function LogoutButton() {
+  const [show, setShow] = useState(false);
+
+  async function confirm() {
+    await signOut({ redirect: false });
+    setShow(false);
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setShow(true)}
+        className="text-xs px-2 py-0.5 rounded border border-white/20 hover:bg-white/10 transition-colors"
+      >
+        退出登录
+      </button>
+
+      {show && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6 shadow-2xl w-80">
+            <p className="text-sm text-[var(--text)]">确定退出登录？</p>
+            <div className="mt-4 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                className="rounded-lg border border-white/20 px-4 py-1.5 text-sm text-[var(--muted)] hover:bg-white/5"
+              >
+                取消
+              </button>
+              <button
+                type="button"
+                onClick={confirm}
+                className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-sm font-medium text-white hover:opacity-90"
+              >
+                确定
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

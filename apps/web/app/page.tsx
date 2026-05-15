@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { LogoutButton } from "./logout-button";
 
 export default async function HomePage() {
   const session = await auth();
@@ -34,7 +35,10 @@ export default async function HomePage() {
             </Link>
           </>
         ) : (
-          <span className="text-[var(--muted)]">已登录：{session.user?.email}</span>
+          <span className="flex items-center gap-3 text-[var(--muted)]">
+            <span>已登录：{session.user?.email}</span>
+            <LogoutButton />
+          </span>
         )}
       </nav>
       <section className="rounded-xl border border-white/10 bg-[var(--surface)] p-6 text-sm text-[var(--muted)]">
