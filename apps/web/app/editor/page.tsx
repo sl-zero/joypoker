@@ -40,6 +40,45 @@ function presetBar<T>(items: { label: string; value: T }[], onPick: (v: T) => vo
   );
 }
 
+/* ---- tooltip texts ---- */
+
+const TIP_H17 = "Soft 17 = A+6，牌面为 17 但 A 可计 1。H17 时庄家继续要牌；关闭则为 S17，庄家停在 17。";
+const TIP_SPLIT = "首两张同 rank 可分成两手独立下注，每手可继续要牌、停牌或加倍。";
+const TIP_DAS = "分牌后的每手可额外下注一倍筹码再抽一张牌（Double After Split）。";
+const TIP_STRAIGHT_MIN = "连续单牌的最低长度，常见 5 张，部分地方规则放宽到 3-4 张。";
+const TIP_ROCKET = "大王+小王的组合，最大的炸弹牌型，可压任意牌。";
+const TIP_BOMB_DOUBLE = "每出现一个炸弹，当局总分翻倍。";
+const TIP_SPRING = "一方一张牌未出即结束，对手得分翻倍。";
+const TIP_ANTI_SPRING = "地主仅出了一手牌后即被农民出完，惩罚性计分翻倍。";
+const TIP_FOUR_TWO_SINGLES = "四张同点牌可带两张单牌一起出。";
+const TIP_FOUR_TWO_PAIRS = "四张同点牌可带两个对子一起出。";
+const TIP_LOOSE_PLANE = "连续三张的飞机牌型，允许所带牌数不足，常见于地方桌协商规则。";
+const TIP_SHOW_BOTTOM = "确定地主后，公开三张底牌给所有人看。";
+const TIP_STRADDLE = "UTG 位在发牌前主动投入 2× 大盲，获得翻前最后行动权。";
+const TIP_RIT = "双方 All-in 后发两次公共牌（转牌+河牌），各赢半池，降低波动。";
+const TIP_ANTE = "翻牌前所有/部分玩家强制投入的额外筹码（Ante），与盲注独立。";
+const TIP_EXPOSE = "河牌圈结束后，剩余玩家必须亮出底牌比较牌型。";
+const TIP_LIMIT = "NL 可随时全下任意筹码；PL 最多下注底池大小；FL 每轮下注额固定。";
+const TIP_FOLLOW_PATTERN = "跟牌时必须出相同类型的牌型且点数更大；关闭则可垫小牌。";
+const TIP_ANNOUNCE = "剩余 1-2 张牌时必须声明张数，防止偷跑。";
+const TIP_RANK_POINTS = "按出完顺序排名计分，头游（第 1 名）得满分，末游扣分。";
+const TIP_HEAD_SCORE = "每局最先出完牌的玩家获得的基础分。";
+
+/* ---- Tip component ---- */
+
+function Tip({ text }: { text: string }) {
+  return (
+    <span className="relative inline-flex group ml-1 align-middle">
+      <span className="inline-flex items-center justify-center w-[15px] h-[15px] rounded-full border border-[var(--muted)] text-[var(--muted)] text-[10px] leading-none font-bold cursor-help">
+        ?
+      </span>
+      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-56 bg-[var(--surface)] border border-white/10 rounded-lg px-3 py-2 text-xs text-[var(--text)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 leading-relaxed">
+        {text}
+      </span>
+    </span>
+  );
+}
+
 export default function EditorPage() {
   const { data: session, status } = useSession();
   const [tab, setTab] = useState<Tab>("blackjack");
@@ -144,7 +183,7 @@ export default function EditorPage() {
               checked={bj.dealerHitsSoft17}
               onChange={(e) => setBj({ ...bj, dealerHitsSoft17: e.target.checked })}
             />
-            庄家软 17 要牌（H17）
+            庄家软 17 要牌（H17）<Tip text={TIP_H17} />
           </label>
           <label className="flex flex-col gap-1 text-sm">
             牌副数（1–8）
@@ -172,7 +211,7 @@ export default function EditorPage() {
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            最大分牌次数（0=关闭；每成功分牌一次计一次，可多次分到多手）
+            最大分牌次数<Tip text={TIP_SPLIT} />（0=关闭；每成功分牌一次计一次，可多次分到多手）
             <input
               type="number"
               min={0}
@@ -193,7 +232,7 @@ export default function EditorPage() {
               checked={bj.doubleAfterSplit}
               onChange={(e) => setBj({ ...bj, doubleAfterSplit: e.target.checked })}
             />
-            分牌后允许加倍
+            分牌后允许加倍<Tip text={TIP_DAS} />
           </label>
         </section>
       )}
@@ -266,7 +305,7 @@ export default function EditorPage() {
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
-              顺子最少张数（3–12）
+              顺子最少张数<Tip text={TIP_STRAIGHT_MIN} />（3–12）
               <input
                 type="number"
                 min={3}
@@ -286,7 +325,7 @@ export default function EditorPage() {
                 checked={dz.allowRocket}
                 onChange={(e) => setDz({ ...dz, allowRocket: e.target.checked })}
               />
-              允许王炸
+              允许王炸<Tip text={TIP_ROCKET} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -294,7 +333,7 @@ export default function EditorPage() {
                 checked={dz.bombDoublesScore}
                 onChange={(e) => setDz({ ...dz, bombDoublesScore: e.target.checked })}
               />
-              炸弹翻倍计分
+              炸弹翻倍计分<Tip text={TIP_BOMB_DOUBLE} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -302,7 +341,7 @@ export default function EditorPage() {
                 checked={dz.springBonus}
                 onChange={(e) => setDz({ ...dz, springBonus: e.target.checked })}
               />
-              春天加成
+              春天加成<Tip text={TIP_SPRING} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -312,7 +351,7 @@ export default function EditorPage() {
                   setDz({ ...dz, allowFourWithTwoSingles: e.target.checked })
                 }
               />
-              允许四带二（单牌）
+              允许四带二（单牌）<Tip text={TIP_FOUR_TWO_SINGLES} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -322,7 +361,7 @@ export default function EditorPage() {
                   setDz({ ...dz, allowFourWithTwoPairs: e.target.checked })
                 }
               />
-              允许四带两对
+              允许四带两对<Tip text={TIP_FOUR_TWO_PAIRS} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -332,7 +371,7 @@ export default function EditorPage() {
                   setDz({ ...dz, showBottomCardsAfterLandlord: e.target.checked })
                 }
               />
-              确定地主后亮底牌
+              确定地主后亮底牌<Tip text={TIP_SHOW_BOTTOM} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -340,7 +379,7 @@ export default function EditorPage() {
                 checked={dz.antiSpring}
                 onChange={(e) => setDz({ ...dz, antiSpring: e.target.checked })}
               />
-              启用反春
+              启用反春<Tip text={TIP_ANTI_SPRING} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -350,7 +389,7 @@ export default function EditorPage() {
                   setDz({ ...dz, allowLoosePlaneAttachments: e.target.checked })
                 }
               />
-              飞机可少带（地方桌）
+              飞机可少带（地方桌）<Tip text={TIP_LOOSE_PLANE} />
             </label>
           </div>
         </section>
@@ -425,7 +464,7 @@ export default function EditorPage() {
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
-              下注结构
+              下注结构<Tip text={TIP_LIMIT} />
               <select
                 className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
                 value={texas.limitType}
@@ -458,7 +497,7 @@ export default function EditorPage() {
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
-              前注类型
+              前注类型<Tip text={TIP_ANTE} />
               <select
                 className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
                 value={texas.anteType}
@@ -528,7 +567,7 @@ export default function EditorPage() {
                   setTexas({ ...texas, straddleAllowed: e.target.checked })
                 }
               />
-              允许 Straddle
+              允许 Straddle<Tip text={TIP_STRADDLE} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -538,7 +577,7 @@ export default function EditorPage() {
                   setTexas({ ...texas, allowRunItTwice: e.target.checked })
                 }
               />
-              允许 Run it twice
+              允许 Run it twice<Tip text={TIP_RIT} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -548,7 +587,7 @@ export default function EditorPage() {
                   setTexas({ ...texas, exposeCardsAtShowdown: e.target.checked })
                 }
               />
-              摊牌亮牌
+              摊牌亮牌<Tip text={TIP_EXPOSE} />
             </label>
           </div>
         </section>
@@ -628,7 +667,7 @@ export default function EditorPage() {
               </select>
             </label>
             <label className="flex flex-col gap-1 text-sm">
-              计分方式
+              计分方式<Tip text={TIP_RANK_POINTS} />
               <select
                 className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
                 value={shangyou.scoringMode}
@@ -644,7 +683,7 @@ export default function EditorPage() {
               </select>
             </label>
             <label className="flex flex-col gap-1 text-sm">
-              头游基础分（1–50）
+              头游基础分<Tip text={TIP_HEAD_SCORE} />（1–50）
               <input
                 type="number"
                 min={1}
@@ -683,7 +722,7 @@ export default function EditorPage() {
                   setShangyou({ ...shangyou, mustFollowPattern: e.target.checked })
                 }
               />
-              必须跟牌型且更大
+              必须跟牌型且更大<Tip text={TIP_FOLLOW_PATTERN} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -703,7 +742,7 @@ export default function EditorPage() {
                   setShangyou({ ...shangyou, allowJokerBomb: e.target.checked })
                 }
               />
-              王炸 / 双王炸弹
+              王炸 / 双王炸弹<Tip text={TIP_ROCKET} />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -716,7 +755,7 @@ export default function EditorPage() {
                   })
                 }
               />
-              最后一手报张数
+              最后一手报张数<Tip text={TIP_ANNOUNCE} />
             </label>
           </div>
         </section>
