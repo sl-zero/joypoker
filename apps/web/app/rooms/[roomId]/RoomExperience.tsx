@@ -18,6 +18,23 @@ import {
   isShangyouState,
   isTexasState,
 } from "@/lib/game-types";
+import {
+  parseRuleProfile,
+  type BlackjackRules,
+  type DoudizhuRules,
+  type TexasHoldemRules,
+  type ShangyouRules,
+} from "@poker/rules-schema";
+import {
+  phaseLabel,
+  gameTypeLabel,
+  tableFormatLabel,
+  limitTypeLabel,
+  anteTypeLabel,
+  bidStyleLabel,
+  firstLeadLabel,
+  scoringModeLabel,
+} from "@/lib/labels";
 
 type RoomPayload = {
   id: string;
@@ -86,6 +103,181 @@ function GameCardBadge({
     );
   }
   return <span className="inline-block">{inner}</span>;
+}
+
+function RuleVal({ children }: { children: React.ReactNode }) {
+  return <span className="text-[var(--accent)] font-medium">{children}</span>;
+}
+
+function RuleOff({ children }: { children: React.ReactNode }) {
+  return <span className="text-red-400 font-medium">{children}</span>;
+}
+
+function renderBlackjackRules(rules: BlackjackRules) {
+  return (
+    <ul className="mt-2 space-y-1 text-sm text-[var(--muted)] list-inside list-disc">
+      <li>使用 <RuleVal>{rules.decks}</RuleVal> 副牌</li>
+      <li>
+        庄家{" "}
+        {rules.dealerHitsSoft17 ? (
+          <RuleVal>软 17 要牌</RuleVal>
+        ) : (
+          <RuleOff>软 17 停牌</RuleOff>
+        )}
+        （{rules.dealerHitsSoft17 ? "H17" : "S17"}）
+      </li>
+      <li>Blackjack 赔付 <RuleVal>{rules.blackjackPayout}</RuleVal> 倍</li>
+      <li>
+        最多分牌 <RuleVal>{rules.maxSplits}</RuleVal> 次
+        {" · "}
+        {rules.doubleAfterSplit ? (
+          <RuleVal>允许</RuleVal>
+        ) : (
+          <RuleOff>不允许</RuleOff>
+        )}{" "}
+        分牌后加倍
+      </li>
+      <li className="text-xs mt-2">目标尽量接近 21 点不爆牌 · 同 rank 可按规定分牌</li>
+    </ul>
+  );
+}
+
+function renderDoudizhuRules(rules: DoudizhuRules) {
+  return (
+    <ul className="mt-2 space-y-1 text-sm text-[var(--muted)] list-inside list-disc">
+      <li>
+        <RuleVal>{rules.playerCount}</RuleVal> 人 ·{" "}
+        <RuleVal>{rules.deckCount}</RuleVal> 副牌 ·{" "}
+        <RuleVal>{bidStyleLabel(rules.bidStyle)}</RuleVal>
+      </li>
+      <li>
+        底分 <RuleVal>{rules.baseScore}</RuleVal> · 顺子最少{" "}
+        <RuleVal>{rules.straightMinLength}</RuleVal> 张
+      </li>
+      <li>
+        {rules.allowRocket ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>} 王炸
+        {" · "}
+        {rules.bombDoublesScore ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>} 炸弹翻倍
+        {" · "}
+        {rules.springBonus ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>} 春天加成
+      </li>
+      <li>
+        {rules.allowFourWithTwoSingles ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>} 四带两单
+        {" · "}
+        {rules.allowFourWithTwoPairs ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>} 四带两对
+      </li>
+      <li>
+        反春{" "}
+        {rules.antiSpring ? <RuleVal>启用</RuleVal> : <RuleOff>关闭</RuleOff>}
+        {" · "}亮底牌{" "}
+        {rules.showBottomCardsAfterLandlord ? <RuleVal>开启</RuleVal> : <RuleOff>关闭</RuleOff>}
+        {" · "}飞机少带{" "}
+        {rules.allowLoosePlaneAttachments ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>}
+      </li>
+      <li className="text-xs mt-2">地主多 3 张底牌 · 农民合作对抗地主</li>
+    </ul>
+  );
+}
+
+function renderTexasRules(rules: TexasHoldemRules) {
+  return (
+    <ul className="mt-2 space-y-1 text-sm text-[var(--muted)] list-inside list-disc">
+      <li>
+        盲注 <RuleVal>{rules.smallBlind}</RuleVal> /{" "}
+        <RuleVal>{rules.bigBlind}</RuleVal> ·{" "}
+        <RuleVal>{limitTypeLabel(rules.limitType)}</RuleVal>
+      </li>
+      <li>
+        <RuleVal>{tableFormatLabel(rules.tableFormat)}</RuleVal> · 最多{" "}
+        <RuleVal>{rules.maxPlayers}</RuleVal> 人
+      </li>
+      <li>
+        前注{" "}
+        {rules.anteType === "none" ? (
+          <RuleOff>无</RuleOff>
+        ) : (
+          <RuleVal>{anteTypeLabel(rules.anteType)}</RuleVal>
+        )}
+        {rules.anteType !== "none" && (
+          <> · 倍数 <RuleVal>{rules.anteMultiplierOfBb}</RuleVal></>
+        )}
+        {" · "}带入 <RuleVal>{rules.minBuyInBb}–{rules.maxBuyInBb}</RuleVal> BB
+      </li>
+      {rules.limitType === "fixed_limit" && (
+        <li>固定限注倍率 <RuleVal>{rules.fixedBetMultiplierOfBb}</RuleVal>× BB</li>
+      )}
+      <li>
+        Straddle{" "}
+        {rules.straddleAllowed ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>}
+        {" · "}发两次{" "}
+        {rules.allowRunItTwice ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>}
+        {" · "}摊牌亮牌{" "}
+        {rules.exposeCardsAtShowdown ? <RuleVal>开启</RuleVal> : <RuleOff>关闭</RuleOff>}
+      </li>
+      <li className="text-xs mt-2">翻前 2 张底牌 · 翻牌/转牌/河牌共 5 张公共牌 · 组最大 5 张牌型</li>
+    </ul>
+  );
+}
+
+function renderShangyouRules(rules: ShangyouRules) {
+  return (
+    <ul className="mt-2 space-y-1 text-sm text-[var(--muted)] list-inside list-disc">
+      <li>
+        <RuleVal>{rules.playerCount}</RuleVal> 人 ·{" "}
+        <RuleVal>{rules.deckCount}</RuleVal> 副牌 · 首出{" "}
+        <RuleVal>{firstLeadLabel(rules.firstLeadRule)}</RuleVal>
+      </li>
+      <li>
+        组队{" "}
+        {rules.teamMode ? <RuleVal>2v2</RuleVal> : <RuleOff>关闭</RuleOff>}
+        {" · "}计分{" "}
+        <RuleVal>{scoringModeLabel(rules.scoringMode)}</RuleVal>
+        {rules.scoringMode === "rank_points" && (
+          <>
+            {" · "}头游 <RuleVal>{rules.headScore}</RuleVal> 分 · 末位 ×
+            <RuleVal>{rules.lastPlaceMultiplier}</RuleVal>
+          </>
+        )}
+      </li>
+      <li>
+        跟牌型{" "}
+        {rules.mustFollowPattern ? <RuleVal>必须跟大</RuleVal> : <RuleOff>可垫小</RuleOff>}
+        {" · "}炸弹{" "}
+        {rules.allowBomb ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>}
+        {" · "}王炸{" "}
+        {rules.allowJokerBomb ? <RuleVal>允许</RuleVal> : <RuleOff>关闭</RuleOff>}
+      </li>
+      <li>
+        报张数{" "}
+        {rules.mustAnnounceLastCount ? <RuleVal>开启</RuleVal> : <RuleOff>关闭</RuleOff>}
+      </li>
+      <li className="text-xs mt-2">出完所有手牌即获胜 · 按出完顺序排名次</li>
+    </ul>
+  );
+}
+
+function renderRuleSummary(ruleSnapshot: unknown, gameType: string) {
+  try {
+    const profile = parseRuleProfile(ruleSnapshot);
+    switch (profile.gameType) {
+      case "blackjack":
+        return renderBlackjackRules(profile);
+      case "doudizhu":
+        return renderDoudizhuRules(profile);
+      case "texas":
+        return renderTexasRules(profile);
+      case "shangyou":
+        return renderShangyouRules(profile);
+      default:
+        return null;
+    }
+  } catch {
+    return (
+      <p className="mt-2 text-xs text-[var(--muted)]">
+        {gameTypeLabel(gameType)} 规则（当前房间）
+      </p>
+    );
+  }
 }
 
 export function RoomExperience({ roomId }: { roomId: string }) {
@@ -253,15 +445,9 @@ export function RoomExperience({ roomId }: { roomId: string }) {
           {isBj && gs && isBlackjackState(gs) && (
             <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
               <h2 className="font-medium">二十一点</h2>
-              <details className="mt-2 text-sm text-[var(--muted)]">
-                <summary className="cursor-pointer text-[var(--accent)]">规则说明</summary>
-                <ul className="mt-2 list-inside list-disc space-y-1 text-[var(--muted)]">
-                  <li>目标：尽量接近 21 点且不爆牌。</li>
-                  <li>要牌 / 停牌；同 rank 可按规定分牌。</li>
-                </ul>
-              </details>
+              {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
               <p className="mt-3 text-sm text-[var(--muted)]">
-                阶段：{gs.phase}
+                阶段：{phaseLabel(gs.phase)}
                 {gs.currentUserId
                   ? ` · 当前行动：${gs.currentUserId === session.user.id ? "你" : "其他玩家"}`
                   : ""}
@@ -385,8 +571,9 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             return (
               <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
                 <h2 className="font-medium">上游</h2>
+                {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
                 <p className="mt-2 text-sm text-[var(--muted)]">
-                  阶段 {s.phase}
+                  阶段 {phaseLabel(s.phase)}
                   {s.rulesEcho.teamMode ? " · 组队" : ""}
                   {s.rulesEcho.mustFollowPattern ? " · 须跟大" : " · 可垫小"}
                 </p>
@@ -488,8 +675,9 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             return (
               <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
                 <h2 className="font-medium">斗地主</h2>
+                {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
                 <p className="mt-2 text-sm text-[var(--muted)]">
-                  {d.phase} · {d.bidStyle}
+                  {phaseLabel(d.phase)} · {bidStyleLabel(d.bidStyle)}
                   {d.landlordUserId ? ` · 地主已确定` : ""}
                 </p>
                 {d.bottomCards && d.bottomCards.length > 0 && (
@@ -641,8 +829,9 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             return (
               <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
                 <h2 className="font-medium">德州扑克</h2>
+                {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
                 <p className="mt-2 text-sm text-[var(--muted)]">
-                  {t.phase} · 底池 {t.pot} · {t.limitType}
+                  {phaseLabel(t.phase)} · 底池 {t.pot} · {limitTypeLabel(t.limitType)}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-1">
                   <span className="text-xs text-[var(--muted)]">公共牌：</span>
@@ -755,7 +944,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
 
           {!isBj && !isSy && !isDz && !isTh && gs && "phase" in gs && gs.phase !== "stub" && (
             <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
-              等待连接游戏服。请确认已启动 game-server 且 NEXT_PUBLIC_SOCKET_URL 正确。
+              等待连接游戏服务器，请确认已启动 game-server 且 NEXT_PUBLIC_SOCKET_URL 配置正确。
             </div>
           )}
         </div>
