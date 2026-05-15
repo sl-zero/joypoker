@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0f1419;
-  --surface: #1a2332;
-  --accent: #3b82f6;
-  --text: #e7ecf3;
-  --muted: #8b9cb3;
+  --bg: #0a1a0f;
+  --surface: #132a18;
+  --surface2: #1e3d20;
+  --accent: #c9a44b;
+  --text: #f0eee6;
+  --muted: #8a9a7b;
 }
 
 body {
   background: var(--bg);
+  background-image: radial-gradient(ellipse at 50% 0%, #132a18 0%, transparent 70%);
+  background-attachment: fixed;
   color: var(--text);
   font-family: system-ui, sans-serif;
 }
