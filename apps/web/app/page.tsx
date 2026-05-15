@@ -41,7 +41,7 @@ export default async function HomePage() {
           </span>
         )}
       </nav>
-      <section className="rounded-xl border border-white/10 bg-[var(--surface)] p-6 text-sm text-[var(--muted)]">
+      <section className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6 text-sm text-[var(--muted)]">
         <p className="font-medium text-[var(--text)]">新手提示</p>
         <ul className="mt-2 list-inside list-disc space-y-1">
           <li>默认使用 SQLite（<code className="text-[var(--text)]">apps/web/.env</code> 中 DATABASE_URL）；若改 PostgreSQL 再配库与迁移</li>

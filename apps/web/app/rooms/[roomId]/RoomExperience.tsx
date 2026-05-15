@@ -66,7 +66,7 @@ function CardBadge({ c }: { c: { suit: string; rank: string } }) {
     c.suit === "H" ? "♥" : c.suit === "D" ? "♦" : c.suit === "C" ? "♣" : "♠";
   return (
     <span
-      className={`inline-flex min-w-[2.25rem] items-center justify-center rounded border border-white/20 px-1 py-0.5 font-mono text-sm ${
+      className={`inline-flex min-w-[2.25rem] items-center justify-center rounded border border-[var(--surface2)] px-1 py-0.5 font-mono text-sm ${
         red ? "text-rose-400" : "text-slate-200"
       }`}
     >
@@ -96,7 +96,7 @@ function GameCardBadge({
       <button
         type="button"
         onClick={() => onToggle(c.id)}
-        className={`rounded border px-0.5 py-0.5 ${selected ? "border-[var(--accent)] ring-2 ring-[var(--accent)]/50" : "border-white/20"}`}
+        className={`rounded border px-0.5 py-0.5 ${selected ? "border-[var(--accent)] ring-2 ring-[var(--accent)]/30" : "border-[var(--surface2)]"}`}
       >
         {inner}
       </button>
@@ -443,7 +443,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
           )}
 
           {isBj && gs && isBlackjackState(gs) && (
-            <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+            <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
               <h2 className="font-medium">二十一点</h2>
               {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
               <p className="mt-3 text-sm text-[var(--muted)]">
@@ -458,7 +458,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                   {gs.dealerHoleHidden ? (
                     <>
                       {gs.dealerUp && <CardBadge c={gs.dealerUp} />}
-                      <span className="rounded border border-white/20 px-2 py-0.5 font-mono text-sm">
+                      <span className="rounded border border-[var(--surface2)] px-2 py-0.5 font-mono text-sm">
                         暗牌
                       </span>
                     </>
@@ -469,7 +469,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
               </div>
               <div className="mt-6 space-y-3">
                 {gs.players.map((p) => (
-                  <div key={p.userId} className="rounded border border-white/10 p-3">
+                  <div key={p.userId} className="rounded border border-[var(--surface2)] p-3">
                     <div className="flex justify-between text-sm">
                       <span>
                         {p.name}
@@ -485,7 +485,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                             className={`rounded border p-2 ${
                               hi === p.activeHandIndex && gs.phase === "playerTurn"
                                 ? "border-[var(--accent)] ring-1 ring-[var(--accent)]/40"
-                                : "border-white/10"
+                                : "border-[var(--surface2)]"
                             }`}
                           >
                             <p className="mb-1 text-xs text-[var(--muted)]">
@@ -507,7 +507,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         {Array.from({ length: p.handCount }).map((_, i) => (
                           <span
                             key={i}
-                            className="inline-block h-8 w-6 rounded border border-white/10 bg-white/5"
+                            className="inline-block h-8 w-6 rounded border border-[var(--surface2)] bg-[var(--surface)]"
                           />
                         ))}
                       </div>
@@ -554,7 +554,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
               {gs.phase === "payout" && isOwner && (
                 <button
                   type="button"
-                  className="mt-6 rounded-lg border border-white/20 px-4 py-2"
+                  className="mt-6 rounded-lg border border-[var(--surface2)] px-4 py-2"
                   onClick={() => socketRef.current?.emit("newRound")}
                 >
                   再来一局
@@ -569,7 +569,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
           {isSy && (() => {
             const s = gs as ShangyouPublicState;
             return (
-              <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+              <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
                 <h2 className="font-medium">上游</h2>
                 {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
                 <p className="mt-2 text-sm text-[var(--muted)]">
@@ -585,7 +585,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 )}
                 <div className="mt-4 space-y-3">
                   {s.players.map((p) => (
-                    <div key={p.userId} className="rounded border border-white/10 p-3 text-sm">
+                    <div key={p.userId} className="rounded border border-[var(--surface2)] p-3 text-sm">
                       <div className="flex justify-between">
                         <span>
                           {p.name}
@@ -657,7 +657,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 {s.phase === "payout" && isOwner && (
                   <button
                     type="button"
-                    className="mt-6 rounded-lg border border-white/20 px-4 py-2"
+                    className="mt-6 rounded-lg border border-[var(--surface2)] px-4 py-2"
                     onClick={() => socketRef.current?.emit("newRound")}
                   >
                     再来一局
@@ -673,7 +673,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
           {isDz && (() => {
             const d = gs as DoudizhuPublicState;
             return (
-              <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+              <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
                 <h2 className="font-medium">斗地主</h2>
                 {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
                 <p className="mt-2 text-sm text-[var(--muted)]">
@@ -758,7 +758,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                       <>
                         <button
                           type="button"
-                          className="rounded border border-white/20 px-3 py-1 text-sm"
+                          className="rounded border border-[var(--surface2)] px-3 py-1 text-sm"
                           onClick={() => socketRef.current?.emit("doudizhuBid", { action: "pass" })}
                         >
                           不叫
@@ -767,7 +767,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                           <button
                             key={pt}
                             type="button"
-                            className="rounded border border-white/20 px-3 py-1 text-sm"
+                            className="rounded border border-[var(--surface2)] px-3 py-1 text-sm"
                             onClick={() => socketRef.current?.emit("doudizhuBid", { points: pt })}
                           >
                             {pt} 分
@@ -795,7 +795,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                     </button>
                     <button
                       type="button"
-                      className="rounded-lg border border-white/30 px-4 py-2"
+                      className="rounded-lg border border-[var(--surface2)] px-4 py-2"
                       onClick={() => socketRef.current?.emit("pass")}
                     >
                       要不起
@@ -808,7 +808,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 {d.phase === "payout" && isOwner && (
                   <button
                     type="button"
-                    className="mt-6 border border-white/20 px-4 py-2"
+                    className="mt-6 border border-[var(--surface2)] px-4 py-2"
                     onClick={() => socketRef.current?.emit("newRound")}
                   >
                     再来一局
@@ -827,7 +827,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             const maxB = Math.max(...t.players.map((p) => p.currentBet), t.bigBlind);
             const toCall = Math.max(0, maxB - (me?.currentBet ?? 0));
             return (
-              <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+              <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
                 <h2 className="font-medium">德州扑克</h2>
                 {room.ruleSnapshot ? renderRuleSummary(room.ruleSnapshot, room.gameType) : null}
                 <p className="mt-2 text-sm text-[var(--muted)]">
@@ -906,7 +906,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                       )}
                       <div className="flex gap-1">
                         <input
-                          className="w-24 rounded border border-white/20 bg-[var(--bg)] px-2 py-1 text-sm"
+                          className="w-24 rounded border border-[var(--surface2)] bg-[var(--bg)] px-2 py-1 text-sm"
                           placeholder="加注到"
                           value={texRaise}
                           onChange={(e) => setTexRaise(e.target.value)}
@@ -929,7 +929,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 {t.phase === "payout" && isOwner && (
                   <button
                     type="button"
-                    className="mt-6 border border-white/20 px-4 py-2"
+                    className="mt-6 border border-[var(--surface2)] px-4 py-2"
                     onClick={() => socketRef.current?.emit("texasNewHand")}
                   >
                     下一手
@@ -950,7 +950,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-4">
+          <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-4">
             <h3 className="font-medium">计分</h3>
             <ul className="mt-2 space-y-2 text-sm">
               {room.members.map((m) => (
@@ -962,7 +962,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             </ul>
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-[var(--surface)] p-4">
+          <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-4">
             <h3 className="font-medium">聊天</h3>
             <div className="mt-2 max-h-64 space-y-2 overflow-y-auto text-sm">
               {room.messages.map((m) => (
@@ -974,7 +974,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             </div>
             <div className="mt-2 flex gap-2">
               <input
-                className="flex-1 rounded border border-white/20 bg-[var(--bg)] px-2 py-1 text-sm"
+                className="flex-1 rounded border border-[var(--surface2)] bg-[var(--bg)] px-2 py-1 text-sm"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={(e) => {

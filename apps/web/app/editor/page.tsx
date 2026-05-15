@@ -24,13 +24,13 @@ type Tab = "blackjack" | "doudizhu" | "texas" | "shangyou";
 
 function presetBar<T>(items: { label: string; value: T }[], onPick: (v: T) => void) {
   return (
-    <div className="mb-4 flex flex-wrap gap-2 border-b border-white/10 pb-4">
+    <div className="mb-4 flex flex-wrap gap-2 border-b border-[var(--surface2)] pb-4">
       <span className="w-full text-xs text-[var(--muted)]">快速预设</span>
       {items.map(({ label, value }) => (
         <button
           key={label}
           type="button"
-          className="rounded border border-white/20 px-2 py-1 text-xs hover:bg-white/10"
+          className="rounded border border-[var(--surface2)] px-2 py-1 text-xs hover:bg-[var(--surface)]"
           onClick={() => onPick({ ...(value as object) } as T)}
         >
           {label}
@@ -76,7 +76,7 @@ function Tip({ text }: { text: string }) {
       >
         ?
       </button>
-      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-56 bg-[var(--surface)] border border-white/10 rounded-lg px-3 py-2 text-xs text-[var(--text)] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity pointer-events-none z-10 leading-relaxed">
+      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-56 bg-[var(--surface)] border border-[var(--surface2)] rounded-lg px-3 py-2 text-xs text-[var(--text)] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity pointer-events-none z-10 leading-relaxed">
         {text}
       </span>
     </span>
@@ -147,7 +147,7 @@ export default function EditorPage() {
         选择玩法与预设，再按需微调；规则会快照写入房间。二十一点已支持联机牌桌，其余玩法为规则配置与占位。
       </p>
 
-      <div className="mt-6 flex flex-wrap gap-2 border-b border-white/10 pb-2">
+      <div className="mt-6 flex flex-wrap gap-2 border-b border-[var(--surface2)] pb-2">
         {(
           [
             ["blackjack", "二十一点"],
@@ -159,7 +159,7 @@ export default function EditorPage() {
           <button
             key={id}
             type="button"
-            className={`rounded px-3 py-1 text-sm ${tab === id ? "bg-[var(--accent)] text-white" : "hover:bg-white/5"}`}
+            className={`rounded px-3 py-1 text-sm ${tab === id ? "bg-[var(--accent)] text-[var(--bg)]" : "hover:bg-[var(--surface)]"}`}
             onClick={() => setTab(id)}
           >
             {label}
@@ -170,7 +170,7 @@ export default function EditorPage() {
       <label className="mt-6 flex flex-col gap-1 text-sm">
         房间名称（可选）
         <input
-          className="rounded border border-white/20 bg-[var(--surface)] px-3 py-2"
+          className="rounded border border-[var(--surface2)] bg-[var(--surface)] px-3 py-2"
           value={roomName}
           onChange={(e) => setRoomName(e.target.value)}
           placeholder="例如：老同学局"
@@ -178,7 +178,7 @@ export default function EditorPage() {
       </label>
 
       {tab === "blackjack" && (
-        <section className="mt-6 space-y-4 rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+        <section className="mt-6 space-y-4 rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
           <h2 className="font-medium">二十一点规则</h2>
           {presetBar([{ label: "经典", value: PRESET_BLACKJACK_CLASSIC }], (v) => setBj({ ...v }))}
           <label className="flex items-center gap-2 text-sm">
@@ -195,7 +195,7 @@ export default function EditorPage() {
               type="number"
               min={1}
               max={8}
-              className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+              className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
               value={bj.decks}
               onChange={(e) => setBj({ ...bj, decks: Number(e.target.value) || 1 })}
             />
@@ -207,7 +207,7 @@ export default function EditorPage() {
               step="0.1"
               min={1}
               max={2}
-              className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+              className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
               value={bj.blackjackPayout}
               onChange={(e) =>
                 setBj({ ...bj, blackjackPayout: Number(e.target.value) || 1 })
@@ -220,7 +220,7 @@ export default function EditorPage() {
               type="number"
               min={0}
               max={3}
-              className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+              className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
               value={bj.maxSplits}
               onChange={(e) =>
                 setBj({ ...bj, maxSplits: Number(e.target.value) || 0 })
@@ -242,7 +242,7 @@ export default function EditorPage() {
       )}
 
       {tab === "doudizhu" && (
-        <section className="mt-6 space-y-4 rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+        <section className="mt-6 space-y-4 rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
           <h2 className="font-medium">斗地主规则</h2>
           {presetBar(
             [
@@ -256,7 +256,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               人数
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={dz.playerCount}
                 onChange={(e) =>
                   setDz({ ...dz, playerCount: Number(e.target.value) as 3 | 4 })
@@ -269,7 +269,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               牌副数
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={dz.deckCount}
                 onChange={(e) =>
                   setDz({ ...dz, deckCount: Number(e.target.value) as 1 | 2 })
@@ -282,7 +282,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               叫牌方式
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={dz.bidStyle}
                 onChange={(e) =>
                   setDz({
@@ -301,7 +301,7 @@ export default function EditorPage() {
                 type="number"
                 min={1}
                 max={64}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={dz.baseScore}
                 onChange={(e) =>
                   setDz({ ...dz, baseScore: Number(e.target.value) || 1 })
@@ -314,7 +314,7 @@ export default function EditorPage() {
                 type="number"
                 min={3}
                 max={12}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={dz.straightMinLength}
                 onChange={(e) =>
                   setDz({ ...dz, straightMinLength: Number(e.target.value) || 5 })
@@ -400,7 +400,7 @@ export default function EditorPage() {
       )}
 
       {tab === "texas" && (
-        <section className="mt-6 space-y-4 rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+        <section className="mt-6 space-y-4 rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
           <h2 className="font-medium">德州扑克（无限注/限注桌配置）</h2>
           {presetBar(
             [
@@ -417,7 +417,7 @@ export default function EditorPage() {
                 type="number"
                 min={0.01}
                 step={0.01}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.smallBlind}
                 onChange={(e) =>
                   setTexas({ ...texas, smallBlind: Math.max(0.01, Number(e.target.value) || 1) })
@@ -430,7 +430,7 @@ export default function EditorPage() {
                 type="number"
                 min={0.02}
                 step={0.01}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.bigBlind}
                 onChange={(e) =>
                   setTexas({ ...texas, bigBlind: Math.max(0.02, Number(e.target.value) || 2) })
@@ -440,7 +440,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               桌型
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.tableFormat}
                 onChange={(e) =>
                   setTexas({
@@ -460,7 +460,7 @@ export default function EditorPage() {
                 type="number"
                 min={2}
                 max={10}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.maxPlayers}
                 onChange={(e) =>
                   setTexas({ ...texas, maxPlayers: Number(e.target.value) || 9 })
@@ -470,7 +470,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               下注结构<Tip text={TIP_LIMIT} />
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.limitType}
                 onChange={(e) =>
                   setTexas({
@@ -490,7 +490,7 @@ export default function EditorPage() {
                 type="number"
                 min={1}
                 max={8}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.fixedBetMultiplierOfBb}
                 onChange={(e) =>
                   setTexas({
@@ -503,7 +503,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               前注类型<Tip text={TIP_ANTE} />
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.anteType}
                 onChange={(e) =>
                   setTexas({
@@ -525,7 +525,7 @@ export default function EditorPage() {
                 min={0}
                 max={2}
                 step={0.05}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.anteMultiplierOfBb}
                 onChange={(e) =>
                   setTexas({
@@ -541,7 +541,7 @@ export default function EditorPage() {
                 type="number"
                 min={1}
                 step={1}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.minBuyInBb}
                 onChange={(e) =>
                   setTexas({ ...texas, minBuyInBb: Number(e.target.value) || 20 })
@@ -554,7 +554,7 @@ export default function EditorPage() {
                 type="number"
                 min={1}
                 step={1}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={texas.maxBuyInBb}
                 onChange={(e) =>
                   setTexas({ ...texas, maxBuyInBb: Number(e.target.value) || 100 })
@@ -598,7 +598,7 @@ export default function EditorPage() {
       )}
 
       {tab === "shangyou" && (
-        <section className="mt-6 space-y-4 rounded-xl border border-white/10 bg-[var(--surface)] p-6">
+        <section className="mt-6 space-y-4 rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6">
           <h2 className="font-medium">上游 / 争上游规则</h2>
           {presetBar(
             [
@@ -622,7 +622,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               人数
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={shangyou.playerCount}
                 onChange={(e) =>
                   setShangyou({
@@ -638,7 +638,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               牌副数
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={shangyou.deckCount}
                 onChange={(e) =>
                   setShangyou({
@@ -654,7 +654,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm sm:col-span-2">
               首出规则
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={shangyou.firstLeadRule}
                 onChange={(e) =>
                   setShangyou({
@@ -673,7 +673,7 @@ export default function EditorPage() {
             <label className="flex flex-col gap-1 text-sm">
               计分方式<Tip text={TIP_RANK_POINTS} />
               <select
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={shangyou.scoringMode}
                 onChange={(e) =>
                   setShangyou({
@@ -692,7 +692,7 @@ export default function EditorPage() {
                 type="number"
                 min={1}
                 max={50}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={shangyou.headScore}
                 onChange={(e) =>
                   setShangyou({ ...shangyou, headScore: Number(e.target.value) || 3 })
@@ -706,7 +706,7 @@ export default function EditorPage() {
                 min={0.5}
                 max={4}
                 step={0.5}
-                className="rounded border border-white/20 bg-[var(--bg)] px-3 py-2"
+                className="rounded border border-[var(--surface2)] bg-[var(--bg)] px-3 py-2"
                 value={shangyou.lastPlaceMultiplier}
                 onChange={(e) =>
                   setShangyou({
@@ -771,7 +771,7 @@ export default function EditorPage() {
         type="button"
         disabled={busy}
         onClick={() => void createRoom()}
-        className="mt-8 w-full rounded-lg bg-[var(--accent)] py-3 font-medium text-white hover:opacity-90 disabled:opacity-50"
+        className="mt-8 w-full rounded-lg bg-[var(--accent)] py-3 font-medium text-[var(--bg)] hover:opacity-90 disabled:opacity-50"
       >
         {busy ? "创建中…" : "创建房间"}
       </button>
