@@ -11,7 +11,15 @@
 
 body {
   background: var(--bg);
-  background-image: radial-gradient(ellipse at 50% 0%, #132a18 0%, transparent 70%);
+  background-image:
+    radial-gradient(ellipse at 50% 0%, #132a18 0%, transparent 70%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 48px,
+      rgb(201 164 75 / 0.015) 48px,
+      rgb(201 164 75 / 0.015) 50px
+    );
   background-attachment: fixed;
   color: var(--text);
   font-family: system-ui, sans-serif;
