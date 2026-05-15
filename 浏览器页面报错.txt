@@ -1,0 +1,55 @@
+Build Error
+
+Module not found: Can't resolve '@poker/rules-schema'
+
+./apps/web/app/editor/page.tsx (6:1)
+
+Module not found: Can't resolve '@poker/rules-schema'
+   4 | import { useSession } from "next-auth/react";
+   5 | import { useState } from "react";
+>  6 | import {
+     | ^^^^^^^^
+>  7 |   PRESET_BLACKJACK_CLASSIC,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  8 |   PRESET_DOUDIZHU_CALL_POINTS,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  9 |   PRESET_DOUDIZHU_CLASSIC,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 10 |   PRESET_DOUDIZHU_FOUR_PLAYER,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 11 |   PRESET_SHANGYOU_CLASSIC,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 12 |   PRESET_SHANGYOU_SINGLE_DECK,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 13 |   PRESET_SHANGYOU_TEAM_2V2,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 14 |   PRESET_TEXAS_CLASSIC,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 15 |   PRESET_TEXAS_HEADS_UP,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 16 |   PRESET_TEXAS_MICROSTAKES,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 17 |   type BlackjackRules,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 18 |   type DoudizhuRules,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 19 |   type ShangyouRules,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 20 |   type TexasHoldemRules,
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 21 | } from "@poker/rules-schema";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  22 |
+  23 | type Tab = "blackjack" | "doudizhu" | "texas" | "shangyou";
+  24 |
+
+Import traces:
+  Client Component Browser:
+    ./apps/web/app/editor/page.tsx [Client Component Browser]
+    ./apps/web/app/editor/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/web/app/editor/page.tsx [Client Component SSR]
+    ./apps/web/app/editor/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found

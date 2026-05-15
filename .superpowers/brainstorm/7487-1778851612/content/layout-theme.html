@@ -1,0 +1,100 @@
+<h2>方案 B + C — 页面效果预览</h2>
+<p class="subtitle">墨绿底 + 暖金点缀 · 居中窄栏 · 背景纹理装饰</p>
+
+<h3 style="margin-top:1.5rem;">首页</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:radial-gradient(ellipse at 50% 0%, #132a18 0%, #0a1a0f 70%);padding:40px 20px;border-radius:12px;position:relative;overflow:hidden;min-height:340px;">
+      <div style="position:absolute;inset:0;opacity:0.03;background-image:repeating-linear-gradient(45deg, transparent, transparent 40px, #c9a44b 40px, #c9a44b 42px), repeating-linear-gradient(-45deg, transparent, transparent 40px, #c9a44b 40px, #c9a44b 42px);pointer-events:none;"></div>
+      <div style="position:relative;max-width:720px;margin:0 auto;">
+        <div style="margin-bottom:28px;">
+          <h1 style="color:#f0eee6;font-size:26px;font-weight:600;margin:0 0 6px 0;">扑克规则编辑器</h1>
+          <p style="color:#8a9a7b;font-size:13px;margin:0;line-height:1.6;">预设经典玩法、编辑地方规则、建房联机；已接通二十一点、上游、斗地主、德州扑克服务端状态机、计分与聊天。</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px;">
+          <span style="background:#c9a44b;color:#0a1a0f;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;">规则编辑器</span>
+          <span style="border:1px solid #2a4a2d;color:#f0eee6;padding:7px 14px;border-radius:7px;font-size:13px;">加入房间</span>
+          <span style="color:#8a9a7b;font-size:12px;margin-left:8px;">已登录：player@example.com</span>
+          <span style="border:1px solid #2a4a2d;color:#8a9a7b;padding:3px 8px;border-radius:5px;font-size:11px;cursor:pointer;">退出登录</span>
+        </div>
+        <div style="background:#132a18;border:1px solid #1e3d20;border-radius:10px;padding:18px 22px;">
+          <p style="color:#f0eee6;font-size:13px;font-weight:500;margin:0 0 10px 0;">新手提示</p>
+          <ul style="color:#8a9a7b;font-size:12px;margin:0;padding-left:18px;line-height:1.8;">
+            <li>默认使用 SQLite</li>
+            <li>终端 1：npm run dev:web；终端 2：npm run dev:game</li>
+            <li>建房时选择玩法类型；人数须符合该玩法</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:1.5rem;">规则编辑器</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:radial-gradient(ellipse at 50% 0%, #132a18 0%, #0a1a0f 70%);padding:32px 20px;border-radius:12px;position:relative;overflow:hidden;min-height:300px;">
+      <div style="position:absolute;inset:0;opacity:0.025;background-image:radial-gradient(circle, #c9a44b 1px, transparent 1px);background-size:24px 24px;pointer-events:none;"></div>
+      <div style="position:relative;max-width:720px;margin:0 auto;">
+        <h2 style="color:#f0eee6;font-size:20px;font-weight:600;margin:0 0 2px 0;">规则编辑器</h2>
+        <p style="color:#8a9a7b;font-size:12px;margin:0 0 16px 0;">选择玩法与预设，按需微调；规则快照写入房间。</p>
+        <div style="display:flex;gap:4px;margin-bottom:12px;border-bottom:1px solid #1e3d20;padding-bottom:6px;">
+          <span style="background:#c9a44b;color:#0a1a0f;padding:5px 12px;border-radius:5px;font-size:12px;">二十一点</span>
+          <span style="color:#8a9a7b;padding:5px 12px;border-radius:5px;font-size:12px;">斗地主</span>
+          <span style="color:#8a9a7b;padding:5px 12px;border-radius:5px;font-size:12px;">德州扑克</span>
+          <span style="color:#8a9a7b;padding:5px 12px;border-radius:5px;font-size:12px;">上游</span>
+        </div>
+        <div style="background:#132a18;border:1px solid #1e3d20;border-radius:10px;padding:18px 22px;">
+          <h3 style="color:#f0eee6;font-size:14px;font-weight:500;margin:0 0 10px 0;">二十一点规则</h3>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label style="display:flex;align-items:center;gap:6px;color:#d4d4cd;font-size:12px;">
+              <input type="checkbox" checked style="accent-color:#c9a44b;"/> 庄家软 17 要牌（H17）
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;border:1px solid #8a9a7b;color:#8a9a7b;font-size:8px;font-weight:bold;">?</span>
+            </label>
+            <label style="display:flex;flex-direction:column;gap:3px;color:#d4d4cd;font-size:12px;">
+              牌副数（1–8）
+              <input type="number" value="6" style="background:#0a1a0f;border:1px solid #1e3d20;border-radius:5px;padding:5px 8px;color:#f0eee6;width:72px;font-size:13px;"/>
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;color:#d4d4cd;font-size:12px;">
+              <input type="checkbox" style="accent-color:#c9a44b;"/> 分牌后允许加倍
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;border:1px solid #8a9a7b;color:#8a9a7b;font-size:8px;font-weight:bold;">?</span>
+            </label>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <div style="text-align:center;background:#c9a44b;color:#0a1a0f;padding:9px 18px;border-radius:7px;font-size:13px;font-weight:500;">创建房间</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:1.5rem;">配色变量映射</h3>
+<div style="background:#0a1a0f;border:1px solid #1e3d20;border-radius:12px;padding:20px 24px;">
+  <table style="width:100%;color:#d4d4cd;font-size:13px;border-collapse:collapse;">
+    <tr style="border-bottom:1px solid #1e3d20;">
+      <td style="padding:8px 0;color:#c9a44b;font-weight:500;">变量</td><td style="padding:8px 0;color:#c9a44b;font-weight:500;">色值</td><td style="padding:8px 0;color:#c9a44b;font-weight:500;">用途</td>
+    </tr>
+    <tr style="border-bottom:1px solid #132a18;">
+      <td style="padding:6px 0;">--bg</td><td style="padding:6px 0;"><span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:#0a1a0f;vertical-align:middle;margin-right:6px;"></span>#0a1a0f</td><td style="padding:6px 0;color:#8a9a7b;">页面背景</td>
+    </tr>
+    <tr style="border-bottom:1px solid #132a18;">
+      <td style="padding:6px 0;">--surface</td><td style="padding:6px 0;"><span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:#132a18;vertical-align:middle;margin-right:6px;"></span>#132a18</td><td style="padding:6px 0;color:#8a9a7b;">卡片/面板</td>
+    </tr>
+    <tr style="border-bottom:1px solid #132a18;">
+      <td style="padding:6px 0;">--surface2</td><td style="padding:6px 0;"><span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:#1e3d20;vertical-align:middle;margin-right:6px;"></span>#1e3d20</td><td style="padding:6px 0;color:#8a9a7b;">边框/分隔</td>
+    </tr>
+    <tr style="border-bottom:1px solid #132a18;">
+      <td style="padding:6px 0;">--accent</td><td style="padding:6px 0;"><span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:#c9a44b;vertical-align:middle;margin-right:6px;"></span>#c9a44b</td><td style="padding:6px 0;color:#8a9a7b;">主强调色</td>
+    </tr>
+    <tr style="border-bottom:1px solid #132a18;">
+      <td style="padding:6px 0;">--accent-light</td><td style="padding:6px 0;"><span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:#f5d78c;vertical-align:middle;margin-right:6px;"></span>#f5d78c</td><td style="padding:6px 0;color:#8a9a7b;">悬停/高亮</td>
+    </tr>
+    <tr style="border-bottom:1px solid #132a18;">
+      <td style="padding:6px 0;">--text</td><td style="padding:6px 0;"><span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:#f0eee6;vertical-align:middle;margin-right:6px;"></span>#f0eee6</td><td style="padding:6px 0;color:#8a9a7b;">主文字</td>
+    </tr>
+    <tr>
+      <td style="padding:6px 0;">--muted</td><td style="padding:6px 0;"><span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:#8a9a7b;vertical-align:middle;margin-right:6px;"></span>#8a9a7b</td><td style="padding:6px 0;color:#8a9a7b;">次级文字</td>
+    </tr>
+  </table>
+</div>

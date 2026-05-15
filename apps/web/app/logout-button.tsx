@@ -50,7 +50,7 @@ export function LogoutButton() {
               <button
                 type="button"
                 onClick={confirm}
-                className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-sm font-medium text-white hover:opacity-90"
+                className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-sm font-medium text-[var(--bg)] hover:opacity-90"
               >
                 确定
               </button>

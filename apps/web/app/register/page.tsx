@@ -32,7 +32,7 @@ export default function RegisterPage() {
         <label className="flex flex-col gap-1 text-sm">
           昵称（可选）
           <input
-            className="rounded border border-white/20 bg-[var(--surface)] px-3 py-2"
+            className="rounded border border-[var(--surface2)] bg-[var(--surface)] px-3 py-2"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -40,7 +40,7 @@ export default function RegisterPage() {
         <label className="flex flex-col gap-1 text-sm">
           邮箱
           <input
-            className="rounded border border-white/20 bg-[var(--surface)] px-3 py-2"
+            className="rounded border border-[var(--surface2)] bg-[var(--surface)] px-3 py-2"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -50,7 +50,7 @@ export default function RegisterPage() {
         <label className="flex flex-col gap-1 text-sm">
           密码（至少 6 位）
           <input
-            className="rounded border border-white/20 bg-[var(--surface)] px-3 py-2"
+            className="rounded border border-[var(--surface2)] bg-[var(--surface)] px-3 py-2"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -61,7 +61,7 @@ export default function RegisterPage() {
         {err && <p className="text-sm text-red-400">{err}</p>}
         <button
           type="submit"
-          className="rounded-lg bg-[var(--accent)] py-2 font-medium text-white hover:opacity-90"
+          className="rounded-lg bg-[var(--accent)] py-2 font-medium text-[var(--bg)] hover:opacity-90"
         >
           注册
         </button>

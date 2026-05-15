@@ -545,7 +545,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
               {gs.phase === "lobby" && isOwner && (
                 <button
                   type="button"
-                  className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-white"
+                  className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-[var(--bg)]"
                   onClick={() => socketRef.current?.emit("startGame")}
                 >
                   开始游戏
@@ -618,7 +618,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 {s.phase === "lobby" && isOwner && (
                   <button
                     type="button"
-                    className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 text-white"
+                    className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 text-[var(--bg)]"
                     onClick={() => socketRef.current?.emit("startGame")}
                   >
                     开始游戏
@@ -729,7 +729,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 {d.phase === "lobby" && isOwner && (
                   <button
                     type="button"
-                    className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 text-white"
+                    className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 text-[var(--bg)]"
                     onClick={() => socketRef.current?.emit("startGame")}
                   >
                     开始游戏
@@ -868,7 +868,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 {t.phase === "lobby" && isOwner && (
                   <button
                     type="button"
-                    className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 text-white"
+                    className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 text-[var(--bg)]"
                     onClick={() => socketRef.current?.emit("startGame")}
                   >
                     开始游戏
@@ -986,7 +986,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
               />
               <button
                 type="button"
-                className="rounded bg-[var(--accent)] px-3 py-1 text-sm text-white"
+                className="rounded bg-[var(--accent)] px-3 py-1 text-sm text-[var(--bg)]"
                 onClick={sendChat}
               >
                 发送

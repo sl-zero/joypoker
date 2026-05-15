@@ -1,0 +1,97 @@
+<h2>配色方案对比</h2>
+<p class="subtitle">当前沉闷单色 vs 三种企业级改进方向 — 选择视觉基调</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>深色专业 · 灰阶层次 + 紫蓝渐变</h3>
+      <p>保留暗色基调，Zinc 灰阶 3-4 层叠加，紫蓝双强调色。参考 Linear / Vercel 企业级风格</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>暖色游戏 · 墨绿底 + 暖金点缀</h3>
+      <p>赌桌绿基底 + 暖金强调色，仿真实牌桌氛围。参考 PokerStars / 高端博彩应用</p>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>明亮现代 · 白底浅灰 + 经典蓝</h3>
+      <p>浅色为主，卡片式布局，高对比度。参考 GitHub / Stripe 设计语言</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2.5rem;">当前配色（对比用）</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:#0f1419;border-radius:12px;padding:32px 24px;text-align:center;">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+        <span style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:10px;background:#0f1419;border:1px solid #1a2332;color:#8b9cb3;font-size:9px;">bg</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:10px;background:#1a2332;color:#8b9cb3;font-size:9px;">surface</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:10px;background:#3b82f6;color:#fff;font-size:9px;">accent</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:10px;background:#e7ecf3;color:#0f1419;font-size:9px;">text</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:10px;background:#8b9cb3;color:#0f1419;font-size:9px;">muted</span>
+      </div>
+      <p style="color:#8b9cb3;font-size:13px;margin:0;">仅有一个 surface 层 · 缺乏卡片层次感 · 大背景沉闷无变化</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2.5rem;">方案 A — 深色专业（推荐）</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:#09090b;border-radius:12px;padding:32px 24px;text-align:center;">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#09090b;border:1px solid #27272a;color:#a1a1aa;font-size:8px;">bg</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#18181b;color:#a1a1aa;font-size:8px;">s1</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#27272a;color:#d4d4d8;font-size:8px;">s2</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#3f3f46;color:#d4d4d8;font-size:8px;">s3</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#6366f1;color:#fff;font-size:8px;">pri</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#a78bfa;color:#09090b;font-size:8px;">sec</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#fafafa;color:#09090b;font-size:8px;">text</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#a1a1aa;color:#09090b;font-size:8px;">mut</span>
+      </div>
+      <p style="color:#a1a1aa;font-size:13px;margin:0;">Zinc 四层灰阶 (bg→s1→s2→s3) · Indigo/Violet 双强调 · Linear / Vercel 风格</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2.5rem;">方案 B — 暖色游戏</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:#0a1a0f;border-radius:12px;padding:32px 24px;text-align:center;">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#0a1a0f;border:1px solid #1a3a1f;color:#8a9a7b;font-size:8px;">bg</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#132a18;color:#8a9a7b;font-size:8px;">s1</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#1e3d20;color:#8a9a7b;font-size:8px;">s2</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#c9a44b;color:#0a1a0f;font-size:8px;">gold</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#f5d78c;color:#0a1a0f;font-size:8px;">lgt</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#f0eee6;color:#0a1a0f;font-size:8px;">txt</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#8a9a7b;color:#0a1a0f;font-size:8px;">mut</span>
+      </div>
+      <p style="color:#8a9a7b;font-size:13px;margin:0;">墨绿三层基底 + 暖金双强调 · 仿牌桌绿毡 · PokerStars 氛围</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2.5rem;">方案 C — 明亮现代</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:#fafafa;border-radius:12px;padding:32px 24px;text-align:center;">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#ffffff;border:1px solid #e4e4e7;color:#71717a;font-size:8px;">card</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#f4f4f5;color:#71717a;font-size:8px;">bg</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#e4e4e7;color:#71717a;font-size:8px;">div</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#2563eb;color:#fff;font-size:8px;">pri</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#1d4ed8;color:#fff;font-size:8px;">hov</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#18181b;color:#fff;font-size:8px;">txt</span>
+        <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:#71717a;color:#fff;font-size:8px;">mut</span>
+      </div>
+      <p style="color:#71717a;font-size:13px;margin:0;">白底 Zinc 灰卡片 · 经典蓝强调 · GitHub / Stripe SaaS 风格</p>
+    </div>
+  </div>
+</div>

@@ -25,7 +25,7 @@ export default function JoinPage() {
         <label className="flex flex-col gap-1 text-sm">
           房间码
           <input
-            className="rounded border border-white/20 bg-[var(--surface)] px-3 py-2 uppercase"
+            className="rounded border border-[var(--surface2)] bg-[var(--surface)] px-3 py-2 uppercase"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder="例如 ABCD1234"
@@ -34,7 +34,7 @@ export default function JoinPage() {
         </label>
         <button
           type="submit"
-          className="rounded-lg bg-[var(--accent)] py-2 font-medium text-white hover:opacity-90"
+          className="rounded-lg bg-[var(--accent)] py-2 font-medium text-[var(--bg)] hover:opacity-90"
         >
           进入
         </button>

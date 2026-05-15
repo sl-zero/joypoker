@@ -14,7 +14,7 @@ export default async function HomePage() {
       </div>
       <nav className="flex flex-wrap gap-4">
         <Link
-          className="rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-white hover:opacity-90"
+          className="rounded-lg bg-[var(--accent)] px-4 py-2 font-medium text-[var(--bg)] hover:opacity-90"
           href="/editor"
         >
           规则编辑器
