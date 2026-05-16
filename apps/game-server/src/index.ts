@@ -16,7 +16,7 @@ import {
   shangyouRulesSchema,
   texasHoldemRulesSchema,
 } from "@poker/rules-schema";
-import { emitGameState, type RuntimeRoom } from "./gameBroadcast";
+import { emitGameState, emitPresence, type RuntimeRoom } from "./gameBroadcast";
 
 const PORT = Number(process.env.PORT) || 4000;
 const WEB_ORIGIN = process.env.WEB_ORIGIN ?? "http://localhost:3000";
@@ -150,6 +150,13 @@ io.on("connection", (socket) => {
       socket.emit("errorMsg", { message: "无权进入" });
       return;
     }
+    // Restore status if previously left or spectating
+    try {
+      await prisma.roomMember.updateMany({
+        where: { roomId, userId, status: { in: ["left", "spectating"] } },
+        data: { status: "active" },
+      });
+    } catch {}
     const rt = getOrCreateRuntime(room.id, room.gameType, room.ownerId, room.ruleSnapshot);
     rt.sockets.set(socket.id, userId);
     socket.join(roomId);
@@ -187,8 +194,8 @@ io.on("connection", (socket) => {
       return;
     }
     const members = await prisma.roomMember.findMany({
-      where: { roomId: auth.roomId },
-      include: { user: true },
+      where: { roomId: auth.roomId, status: "active" },
+      include: { user: { select: { id: true, name: true } } },
       orderBy: { seatOrder: "asc" },
     });
     const m = members.map((x) => ({ userId: x.userId, name: x.user.name }));
@@ -396,11 +403,55 @@ io.on("connection", (socket) => {
     emitGameState(io, auth.roomId, rt);
   });
 
-  socket.on("disconnect", () => {
+  socket.on("leave", async () => {
+    const userId = auth.userId;
     const rt = rooms.get(auth.roomId);
     if (rt) {
       rt.sockets.delete(socket.id);
-      io.to(auth.roomId).emit("presence", { count: rt.sockets.size });
+      try {
+        await prisma.roomMember.updateMany({
+          where: { roomId: auth.roomId, userId, status: "active" },
+          data: { status: "left" },
+        });
+      } catch {}
+      emitGameState(io, rt.roomId, rt);
+      emitPresence(io, rt.roomId, rt);
+      socket.leave(auth.roomId);
+      socket.disconnect();
+    }
+  });
+
+  socket.on("spectate", async () => {
+    const userId = auth.userId;
+    const rt = rooms.get(auth.roomId);
+    if (!rt) return;
+    try {
+      const member = await prisma.roomMember.findFirst({
+        where: { roomId: auth.roomId, userId },
+      });
+      if (!member) return;
+      const newStatus = member.status === "spectating" ? "active" : "spectating";
+      await prisma.roomMember.update({
+        where: { id: member.id },
+        data: { status: newStatus },
+      });
+      emitGameState(io, rt.roomId, rt);
+      emitPresence(io, rt.roomId, rt);
+    } catch {}
+  });
+
+  socket.on("disconnect", async () => {
+    const rt = rooms.get(auth.roomId);
+    if (rt) {
+      rt.sockets.delete(socket.id);
+      try {
+        await prisma.roomMember.updateMany({
+          where: { roomId: auth.roomId, userId: auth.userId, status: "active" },
+          data: { status: "left" },
+        });
+      } catch {}
+      emitGameState(io, rt.roomId, rt);
+      emitPresence(io, rt.roomId, rt);
     }
   });
 });

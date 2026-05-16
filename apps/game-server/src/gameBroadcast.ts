@@ -16,6 +16,10 @@ export interface RuntimeRoom {
   texas?: TexasHoldemRoom;
 }
 
+export function emitPresence(io: Server, roomId: string, rt: RuntimeRoom): void {
+  io.to(roomId).emit("presence", { count: rt.sockets.size });
+}
+
 export function emitGameState(io: Server, roomId: string, rt: RuntimeRoom): void {
   for (const [socketId, userId] of rt.sockets) {
     const socket = io.sockets.sockets.get(socketId);
