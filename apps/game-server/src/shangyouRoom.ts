@@ -60,6 +60,7 @@ export class ShangyouRoom {
   lastPayout: Record<string, number> | undefined;
   lastRoundFirstUserId: string | null = null;
   finishOrder: string[] = [];
+  spectatorUserIds: Set<string> = new Set();
 
   constructor(roomId: string, ownerId: string, rules: ShangyouRules) {
     this.roomId = roomId;
@@ -77,6 +78,7 @@ export class ShangyouRoom {
     this.freeTable = true;
     this.lastPayout = undefined;
     this.finishOrder = [];
+    this.spectatorUserIds.clear();
   }
 
   private teamOfSeat(seat: number): 0 | 1 {
@@ -106,11 +108,12 @@ export class ShangyouRoom {
     return 0;
   }
 
-  start(members: { userId: string; name: string | null }[]): { ok: true } | { ok: false; error: string } {
+  start(members: { userId: string; name: string | null }[], spectatorIds?: string[]): { ok: true } | { ok: false; error: string } {
     if (this.phase !== "lobby") return { ok: false, error: "游戏进行中" };
     if (members.length !== this.rules.playerCount) {
       return { ok: false, error: `需要 ${this.rules.playerCount} 名玩家` };
     }
+    this.spectatorUserIds = new Set(spectatorIds ?? []);
     const deck = buildShangyouDeck(this.rules.deckCount);
     if (deck.length % members.length !== 0) {
       return { ok: false, error: "牌数无法均分" };
@@ -283,6 +286,7 @@ export class ShangyouRoom {
 
   publicState(forUserId?: string): ShangyouPublicState {
     const cur = this.players[this.currentSeat];
+    const isSpectator = forUserId ? this.spectatorUserIds.has(forUserId) : false;
     const players: ShangyouPlayerPublic[] = this.players.map((p, seat) => {
       const rank = this.finishOrder.indexOf(p.userId);
       const base: ShangyouPlayerPublic = {
@@ -292,7 +296,7 @@ export class ShangyouRoom {
         finishedRank: rank >= 0 ? rank + 1 : undefined,
         teamId: this.rules.teamMode && this.rules.playerCount === 4 ? this.teamOfSeat(seat) : undefined,
       };
-      if (forUserId === p.userId) {
+      if (forUserId === p.userId || isSpectator) {
         return {
           ...base,
           hand: p.hand.map((c) =>

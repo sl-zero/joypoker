@@ -4,6 +4,7 @@ import {
   compareTexasStrength,
   shuffle,
   standardDeck,
+  type TexasHandStrength,
 } from "@poker/cards-core";
 import type { TexasHoldemRules } from "@poker/rules-schema";
 
@@ -48,6 +49,12 @@ export interface TexasPublicState {
   ritPending?: boolean;
   ritAgreed?: string[];
   lastPayout?: Record<string, number>;
+  showdown?: {
+    userId: string;
+    name: string;
+    hole: { suit: string; rank: string }[];
+    handRank: TexasHandStrength;
+  }[];
 }
 
 interface TPlayer {
@@ -59,6 +66,7 @@ interface TPlayer {
   currentBet: number;
   totalCommitted: number;
   mucked: boolean;
+  handRank?: TexasHandStrength;
 }
 
 export class TexasHoldemRoom {
@@ -85,6 +93,7 @@ export class TexasHoldemRoom {
   actCursor = 0;
   actedThisStreet: boolean[] = [];
   stackAtHandStart: Map<string, number> = new Map();
+  spectatorUserIds: Set<string> = new Set();
 
   constructor(roomId: string, ownerId: string, rules: TexasHoldemRules) {
     this.roomId = roomId;
@@ -109,13 +118,15 @@ export class TexasHoldemRoom {
     this.lastPayout = undefined;
     this.ritPending = false;
     this.ritAgreed.clear();
+    this.spectatorUserIds.clear();
   }
 
-  start(members: { userId: string; name: string | null }[]): { ok: true } | { ok: false; error: string } {
+  start(members: { userId: string; name: string | null }[], spectatorIds?: string[]): { ok: true } | { ok: false; error: string } {
     if (this.phase !== "lobby") return { ok: false, error: "游戏进行中" };
     const n = members.length;
     if (n < 2) return { ok: false, error: "至少 2 人" };
     if (n > this.rules.maxPlayers) return { ok: false, error: "人数超过桌限" };
+    this.spectatorUserIds = new Set(spectatorIds ?? []);
     const bb = this.rules.bigBlind;
     const buyIn = bb * this.rules.minBuyInBb;
     this.players = members.map((m) => ({
@@ -377,6 +388,9 @@ export class TexasHoldemRoom {
 
   private resolveShowdown() {
     const contenders = this.players.filter((p) => !p.folded);
+    for (const p of contenders) {
+      p.handRank = bestTexasHandFromBoard(p.hole, this.board);
+    }
     if (contenders.length === 1) {
       this.awardPotTo(contenders[0].userId);
       return;
@@ -407,6 +421,7 @@ export class TexasHoldemRoom {
 
   publicState(forUserId?: string): TexasPublicState {
     const { sbSeat, bbSeat } = this.sbBbSeats();
+    const isSpectator = forUserId ? this.spectatorUserIds.has(forUserId) : false;
     return {
       gameType: "texas",
       phase: this.phase,
@@ -420,7 +435,7 @@ export class TexasHoldemRoom {
           totalCommitted: Math.round(p.totalCommitted * 100) / 100,
           mucked: p.mucked,
         };
-        if (forUserId === p.userId || (this.phase === "showdown" && this.rules.exposeCardsAtShowdown)) {
+        if (forUserId === p.userId || isSpectator || (this.phase === "showdown" && this.rules.exposeCardsAtShowdown)) {
           pub.hole = p.hole.map((c) => ({ suit: c.suit, rank: c.rank }));
         }
         return pub;
@@ -442,6 +457,14 @@ export class TexasHoldemRoom {
       ritPending: this.ritPending,
       ritAgreed: [...this.ritAgreed],
       lastPayout: this.lastPayout,
+      showdown: this.phase === "payout" ? this.players
+        .filter(p => !p.folded && p.hole.length > 0 && p.handRank)
+        .map(p => ({
+          userId: p.userId,
+          name: p.name,
+          hole: p.hole.map(c => ({ suit: c.suit, rank: c.rank })),
+          handRank: p.handRank!,
+        })) : undefined,
     };
   }
 }

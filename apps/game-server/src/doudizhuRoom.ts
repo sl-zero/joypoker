@@ -64,6 +64,7 @@ export class DoudizhuRoom {
   farmersPlaysCount = 0;
   bidRound = 0;
   maxBidSoFar = 0;
+  spectatorUserIds: Set<string> = new Set();
 
   constructor(roomId: string, ownerId: string, rules: DoudizhuRules) {
     this.roomId = roomId;
@@ -87,12 +88,14 @@ export class DoudizhuRoom {
     this.farmersPlaysCount = 0;
     this.bidRound = 0;
     this.maxBidSoFar = 0;
+    this.spectatorUserIds.clear();
   }
 
-  start(members: { userId: string; name: string | null }[]): { ok: true } | { ok: false; error: string } {
+  start(members: { userId: string; name: string | null }[], spectatorIds?: string[]): { ok: true } | { ok: false; error: string } {
     if (this.phase !== "lobby") return { ok: false, error: "游戏进行中" };
     const need = this.rules.playerCount;
     if (members.length !== need) return { ok: false, error: `需要 ${need} 名玩家` };
+    this.spectatorUserIds = new Set(spectatorIds ?? []);
     const deck = buildDoudizhuDeck(this.rules.deckCount);
     const bottomN = 3;
     const rest = deck.slice(0, deck.length - bottomN);
@@ -302,6 +305,7 @@ export class DoudizhuRoom {
       gameType: "doudizhu",
       phase: this.phase,
       players: this.players.map((p) => {
+        const isSpectator = forUserId ? this.spectatorUserIds.has(forUserId) : false;
         const pub: DdzPlayerPublic = {
           userId: p.userId,
           name: p.name,
@@ -309,7 +313,7 @@ export class DoudizhuRoom {
           isLandlord: this.landlordUserId === p.userId,
           bid: p.bid >= 0 ? p.bid : undefined,
         };
-        if (forUserId === p.userId) {
+        if (forUserId === p.userId || isSpectator) {
           pub.hand = p.hand.map((c) =>
             c.kind === "standard"
               ? { kind: "standard", suit: c.suit, rank: c.rank, id: c.id }

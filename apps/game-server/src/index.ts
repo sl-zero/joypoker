@@ -198,6 +198,11 @@ io.on("connection", (socket) => {
       include: { user: { select: { id: true, name: true } } },
       orderBy: { seatOrder: "asc" },
     });
+    const spectators = await prisma.roomMember.findMany({
+      where: { roomId: auth.roomId, status: "spectating" },
+      select: { userId: true },
+    });
+    const spectatorIds = spectators.map((s) => s.userId);
     const m = members.map((x) => ({ userId: x.userId, name: x.user.name }));
     if (rt.gameType === "blackjack" && rt.blackjack) {
       const res = rt.blackjack.start(m);
@@ -212,7 +217,7 @@ io.on("connection", (socket) => {
       return;
     }
     if (rt.gameType === "shangyou" && rt.shangyou) {
-      const res = rt.shangyou.start(m);
+      const res = rt.shangyou.start(m, spectatorIds);
       if (!res.ok) {
         socket.emit("errorMsg", { message: res.error });
         return;
@@ -221,7 +226,7 @@ io.on("connection", (socket) => {
       return;
     }
     if (rt.gameType === "doudizhu" && rt.doudizhu) {
-      const res = rt.doudizhu.start(m);
+      const res = rt.doudizhu.start(m, spectatorIds);
       if (!res.ok) {
         socket.emit("errorMsg", { message: res.error });
         return;
@@ -230,7 +235,7 @@ io.on("connection", (socket) => {
       return;
     }
     if (rt.gameType === "texas" && rt.texas) {
-      const res = rt.texas.start(m);
+      const res = rt.texas.start(m, spectatorIds);
       if (!res.ok) {
         socket.emit("errorMsg", { message: res.error });
         return;
