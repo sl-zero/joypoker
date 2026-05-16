@@ -39,6 +39,8 @@ model RoomMember {
   userId     String
   seatOrder  Int?
   totalScore Int    @default(0)
+  status     String @default("active")
+  source     String @default("editor")
   room       Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
   user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
