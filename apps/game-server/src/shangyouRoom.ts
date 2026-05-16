@@ -184,6 +184,11 @@ export class ShangyouRoom {
       this.settleRound();
       return;
     }
+    if (active.length === 1) {
+      this.finishOrder.push(active[0].userId);
+      this.settleRound();
+      return;
+    }
     this.freeTable = true;
     this.tableCombo = null;
     this.passesSinceLastPlay = 0;
