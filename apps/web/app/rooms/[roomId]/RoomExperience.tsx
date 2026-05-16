@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { io } from "socket.io-client";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type {
   BJPublicState,
@@ -35,6 +36,7 @@ import {
   firstLeadLabel,
   scoringModeLabel,
   comboTypeLabel,
+  texasHandLabel,
 } from "@/lib/labels";
 
 type RoomPayload = {
@@ -47,6 +49,7 @@ type RoomPayload = {
   members: {
     userId: string;
     totalScore: number;
+    status?: string;
     user: { id: string; name: string | null };
   }[];
   messages: {
@@ -283,6 +286,9 @@ function renderRuleSummary(ruleSnapshot: unknown, gameType: string) {
 
 export function RoomExperience({ roomId }: { roomId: string }) {
   const { data: session, status } = useSession();
+  const searchParams = useSearchParams();
+  const fromParam = searchParams.get("from");
+  const backUrl = fromParam === "join" ? "/join" : "/editor";
   const [room, setRoom] = useState<RoomPayload | null>(null);
   const [loadErr, setLoadErr] = useState<string | null>(null);
   const [gameState, setGameState] = useState<GameStateUnion | null>(null);
@@ -430,9 +436,14 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             {room.gameType} · 在线 {presence}
           </p>
         </div>
-        <Link href="/editor" className="text-sm text-[var(--accent)] underline">
-          再开一局
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href={backUrl} className="text-sm text-[var(--muted)] hover:text-[var(--text)]">
+            离开房间
+          </Link>
+          <Link href="/editor" className="text-sm text-[var(--accent)] underline">
+            再开一局
+          </Link>
+        </div>
       </div>
 
       <section className="mt-8 grid gap-8 lg:grid-cols-3">
@@ -956,6 +967,24 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                     下一手
                   </button>
                 )}
+                {t.phase === "payout" && t.showdown && t.showdown.length > 0 && (
+                  <div className="mt-4 space-y-3">
+                    <p className="text-sm font-medium text-[var(--text)]">摊牌</p>
+                    {t.showdown.map((sd) => (
+                      <div key={sd.userId} className="rounded border border-[var(--surface2)] p-3">
+                        <p className="text-sm">
+                          {sd.name}
+                          <span className="ml-2 text-xs text-[var(--accent)]">{texasHandLabel(sd.handRank)}</span>
+                        </p>
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {sd.hole.map((c, i) => (
+                            <CardBadge key={i} c={c} />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {t.lastPayout && (
                   <p className="mt-4 text-sm text-[var(--muted)]">上局筹码变动：{payoutLine(room, t.lastPayout)}</p>
                 )}
@@ -975,12 +1004,27 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             <h3 className="font-medium">计分</h3>
             <ul className="mt-2 space-y-2 text-sm">
               {room.members.map((m) => (
-                <li key={m.userId} className="flex justify-between">
-                  <span>{m.user.name ?? m.userId.slice(0, 8)}</span>
+                <li key={m.userId} className="flex justify-between items-center">
+                  <span>
+                    {m.user.name ?? m.userId.slice(0, 8)}
+                    {m.status === "left" && <span className="text-red-400 ml-1">（已离开）</span>}
+                    {m.status === "spectating" && <span className="text-amber-400 ml-1">（观战中）</span>}
+                  </span>
                   <span>{formatScore(m.totalScore)}</span>
                 </li>
               ))}
             </ul>
+            {session?.user?.id && !isOwner && (
+              <button
+                type="button"
+                onClick={() => socketRef.current?.emit("spectate")}
+                className="mt-3 w-full rounded border border-[var(--surface2)] px-3 py-1.5 text-xs text-[var(--muted)] hover:bg-[var(--surface)] transition-colors"
+              >
+                {room.members.find(m => m.userId === session.user.id)?.status === "spectating"
+                  ? "取消观战"
+                  : "观战"}
+              </button>
+            )}
           </div>
 
           <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-4">

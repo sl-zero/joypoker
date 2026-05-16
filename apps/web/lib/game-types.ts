@@ -116,6 +116,12 @@ export interface TexasPublicState {
   bigBlind: number;
   limitType: string;
   lastPayout?: Record<string, number>;
+  showdown?: {
+    userId: string;
+    name: string;
+    hole: { suit: string; rank: string }[];
+    handRank: number;
+  }[];
 }
 
 export type GameStateUnion =
