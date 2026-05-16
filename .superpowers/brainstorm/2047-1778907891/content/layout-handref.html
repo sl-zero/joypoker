@@ -1,0 +1,103 @@
+<h2>游戏界面布局 — 牌型提示栏 + 比例调整</h2>
+<p class="subtitle">当前 2:1 分栏 vs 新增左侧牌型参考面板</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>三栏布局 · 1:2:1</h3>
+      <p>左牌型参考 | 中游戏区 | 右计分+聊天，游戏区保持视觉重心</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>左侧固定窄栏 + 右侧自适应</h3>
+      <p>左固定 180px 牌型参考 | 右游戏+计分聊天，牌型栏始终可见不挤压游戏区</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2rem;">当前布局（对比）</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:#0a1a0f;border-radius:10px;padding:12px;display:flex;gap:8px;min-height:160px;font-family:system-ui,sans-serif;">
+      <div style="flex:2;background:#132a18;border-radius:6px;padding:10px;border:1px solid #1e3d20;">
+        <p style="color:#f0eee6;font-size:12px;margin:0;">游戏区（2/3 宽度）</p>
+        <p style="color:#8a9a7b;font-size:10px;margin:4px 0 0 0;">牌桌 + 玩家列表</p>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+        <div style="background:#132a18;border-radius:6px;padding:8px;border:1px solid #1e3d20;flex:1;"><p style="color:#f0eee6;font-size:10px;margin:0;">计分</p></div>
+        <div style="background:#132a18;border-radius:6px;padding:8px;border:1px solid #1e3d20;flex:1;"><p style="color:#f0eee6;font-size:10px;margin:0;">聊天</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2rem;">方案 A — 三栏 1:2:1</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:#0a1a0f;border-radius:10px;padding:10px;display:flex;gap:8px;min-height:220px;font-family:system-ui,sans-serif;">
+      <div style="flex:1;background:#132a18;border-radius:6px;padding:10px;border:1px solid #1e3d20;">
+        <p style="color:#c9a44b;font-size:10px;font-weight:500;margin:0 0 8px 0;">牌型（大→小）</p>
+        <div style="display:flex;flex-direction:column;gap:2px;font-size:9px;">
+          <span style="color:#f0eee6;">🃏🃏 王炸</span>
+          <span style="color:#f0eee6;">💣×4+ 炸弹</span>
+          <span style="color:#a1a1aa;">🛩️ ✈️ 飞机带牌</span>
+          <span style="color:#a1a1aa;">🔗×3+ 连对</span>
+          <span style="color:#a1a1aa;">🔢×5+ 顺子</span>
+          <span style="color:#a1a1aa;">3️⃣ 三张</span>
+          <span style="color:#a1a1aa;">2️⃣2️⃣ 对子</span>
+          <span style="color:#a1a1aa;">1️⃣ 单张</span>
+        </div>
+      </div>
+      <div style="flex:2;background:#132a18;border-radius:6px;padding:10px;border:1px solid #1e3d20;">
+        <p style="color:#f0eee6;font-size:11px;font-weight:500;margin:0 0 6px 0;">上游 · 出牌中</p>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <div style="background:#1e3d20;border-radius:4px;padding:4px 8px;font-size:9px;color:#f0eee6;">玩家A（你）· 8 张</div>
+          <div style="border:1px solid #1e3d20;border-radius:4px;padding:4px 8px;font-size:9px;color:#a1a1aa;">玩家B · 10 张</div>
+          <div style="border:1px solid #1e3d20;border-radius:4px;padding:4px 8px;font-size:9px;color:#a1a1aa;">玩家C · 7 张</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+        <div style="background:#132a18;border-radius:6px;padding:8px;border:1px solid #1e3d20;flex:1;"><p style="color:#f0eee6;font-size:9px;margin:0 0 4px 0;">计分</p><p style="color:#8a9a7b;font-size:8px;margin:0;">A: 3.0 / B: 0</p></div>
+        <div style="background:#132a18;border-radius:6px;padding:8px;border:1px solid #1e3d20;flex:1;"><p style="color:#f0eee6;font-size:9px;margin:0 0 4px 0;">聊天</p><p style="color:#8a9a7b;font-size:8px;margin:0;">A: 出牌</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2rem;">方案 B — 左侧固定窄栏</h3>
+<div class="mockup">
+  <div class="mockup-body">
+    <div style="background:#0a1a0f;border-radius:10px;padding:10px;display:flex;gap:8px;min-height:220px;font-family:system-ui,sans-serif;">
+      <div style="width:170px;flex-shrink:0;background:#132a18;border-radius:6px;padding:10px;border:1px solid #1e3d20;">
+        <p style="color:#c9a44b;font-size:10px;font-weight:500;margin:0 0 8px 0;">牌型（大→小）</p>
+        <div style="display:flex;flex-direction:column;gap:2px;font-size:9px;">
+          <span style="color:#f0eee6;">🃏🃏 王炸</span>
+          <span style="color:#f0eee6;">💣×4+ 炸弹</span>
+          <span style="color:#a1a1aa;">🛩️ ✈️ 飞机带牌</span>
+          <span style="color:#a1a1aa;">🔗×3+ 连对</span>
+          <span style="color:#a1a1aa;">🔢×5+ 顺子</span>
+          <span style="color:#a1a1aa;">3️⃣ 三张</span>
+          <span style="color:#a1a1aa;">2️⃣2️⃣ 对子</span>
+          <span style="color:#a1a1aa;">1️⃣ 单张</span>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;gap:6px;">
+        <div style="flex:1;background:#132a18;border-radius:6px;padding:10px;border:1px solid #1e3d20;">
+          <p style="color:#f0eee6;font-size:11px;font-weight:500;margin:0 0 6px 0;">上游 · 出牌中</p>
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div style="background:#1e3d20;border-radius:4px;padding:4px 8px;font-size:9px;color:#f0eee6;">玩家A（你）· 8 张</div>
+            <div style="border:1px solid #1e3d20;border-radius:4px;padding:4px 8px;font-size:9px;color:#a1a1aa;">玩家B · 10 张</div>
+            <div style="border:1px solid #1e3d20;border-radius:4px;padding:4px 8px;font-size:9px;color:#a1a1aa;">玩家C · 7 张</div>
+          </div>
+        </div>
+        <div style="width:180px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;">
+          <div style="background:#132a18;border-radius:6px;padding:8px;border:1px solid #1e3d20;flex:1;"><p style="color:#f0eee6;font-size:9px;margin:0 0 4px 0;">计分</p><p style="color:#8a9a7b;font-size:8px;margin:0;">A: 3.0 / B: 0</p></div>
+          <div style="background:#132a18;border-radius:6px;padding:8px;border:1px solid #1e3d20;flex:1;"><p style="color:#f0eee6;font-size:9px;margin:0 0 4px 0;">聊天</p><p style="color:#8a9a7b;font-size:8px;margin:0;">A: 出牌</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

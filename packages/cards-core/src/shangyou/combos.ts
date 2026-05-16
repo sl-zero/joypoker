@@ -28,7 +28,10 @@ export type ShangyouComboType =
   | "single"
   | "pair"
   | "triple"
+  | "triple_single"
   | "straight"
+  | "straight_pairs"
+  | "plane"
   | "bomb"
   | "jokerBomb";
 
@@ -82,7 +85,7 @@ function straightTopPower(std: Extract<GameCard, { kind: "standard" }>[]): numbe
 /** 解析一手牌型；非法返回 null */
 export function classifyShangyouPlay(
   cards: GameCard[],
-  opts: { allowBomb: boolean; allowJokerBomb: boolean },
+  opts: { allowBomb: boolean; allowJokerBomb: boolean; allowTripleSingle: boolean },
 ): ShangyouCombo | null {
   if (cards.length === 0) return null;
   const n = cards.length;
@@ -107,6 +110,7 @@ export function classifyShangyouPlay(
   const m = countRanks(cards);
   const entries = [...m.entries()].sort((a, b) => b[1] - a[1]);
 
+  // 炸弹（4+ 同点）
   if (entries.length === 1 && entries[0][1] >= 4) {
     if (!opts.allowBomb) return null;
     const rank = entries[0][0] as Rank;
@@ -119,10 +123,12 @@ export function classifyShangyouPlay(
     };
   }
 
+  // 单张
   if (n === 1) {
     return { type: "single", primaryPower: shangyouRankPower(cards[0]), cards };
   }
 
+  // 对子
   if (n === 2) {
     if (entries.length === 1 && entries[0][1] === 2) {
       const r = entries[0][0] as Rank;
@@ -135,6 +141,7 @@ export function classifyShangyouPlay(
     return null;
   }
 
+  // 三张
   if (n === 3) {
     if (entries.length === 1 && entries[0][1] === 3) {
       const r = entries[0][0] as Rank;
@@ -147,10 +154,112 @@ export function classifyShangyouPlay(
     return null;
   }
 
+  // 三带一
+  if (n === 4 && opts.allowTripleSingle) {
+    const triple = entries.find(([, c]) => c === 3);
+    const single = entries.find(([, c]) => c === 1);
+    if (triple && single) {
+      return {
+        type: "triple_single",
+        primaryPower: shangyouRankPower({ kind: "standard", suit: "S", rank: triple[0] as Rank, id: "" }),
+        cards,
+      };
+    }
+  }
+
+  // 连对：至少 3 连对，≥6 张且偶数
+  if (n >= 6 && n % 2 === 0) {
+    const pairRanks = entries.filter(([, c]) => c === 2).map(([r]) => r as Rank);
+    if (pairRanks.length === n / 2) {
+      const idxs = pairRanks.map((r) => STRAIGHT_ORDER.indexOf(r));
+      if (!idxs.includes(-1) && !pairRanks.includes("2" as Rank)) {
+        const sorted = [...idxs].sort((a, b) => a - b);
+        let isConsecutive = true;
+        for (let i = 1; i < sorted.length; i++) {
+          if (sorted[i] !== sorted[i - 1] + 1) { isConsecutive = false; break; }
+        }
+        if (isConsecutive && sorted.length >= 3) {
+          const topRank = STRAIGHT_ORDER[sorted[sorted.length - 1]];
+          return {
+            type: "straight_pairs",
+            primaryPower: shangyouRankPower({ kind: "standard", suit: "S", rank: topRank, id: "" }),
+            len: pairRanks.length,
+            cards,
+          };
+        }
+      }
+    }
+  }
+
+  // 顺子（≥5 张单顺）
   if (n >= 5) {
     const top = straightTopPower(std);
-    if (top === null) return null;
-    return { type: "straight", primaryPower: top, len: n, cards };
+    if (top !== null) {
+      return { type: "straight", primaryPower: top, len: n, cards };
+    }
+  }
+
+  // 飞机：≥2 组连续三张 + 附件（严格模式匹配）
+  if (n >= 6) {
+    const triples = entries.filter(([, c]) => c >= 3).map(([r]) => r as Rank);
+    if (triples.length >= 2) {
+      const idxs = triples.map((r) => STRAIGHT_ORDER.indexOf(r));
+      if (!idxs.includes(-1)) {
+        const sorted = [...idxs].sort((a, b) => a - b);
+        let bestEnd = -1;
+        let bestStart = -1;
+        let runStart = 0;
+        for (let i = 1; i <= sorted.length; i++) {
+          if (i < sorted.length && sorted[i] === sorted[i - 1] + 1) continue;
+          if (i - runStart >= 2 && i - runStart > bestEnd - bestStart) {
+            bestStart = runStart;
+            bestEnd = i;
+          }
+          runStart = i;
+        }
+        if (bestEnd - bestStart >= 2) {
+          const planeRanks = sorted.slice(bestStart, bestEnd).map((i) => STRAIGHT_ORDER[i]);
+          const planeLen = planeRanks.length;
+          const planeCards = std.filter((c) => planeRanks.includes(c.rank as Rank));
+          const attachments = std.filter((c) => !planeRanks.includes(c.rank as Rank));
+          const am = countRanks(attachments);
+          const aEntries = [...am.entries()];
+          const singleAttach = aEntries.filter(([, c]) => c === 1);
+          const pairAttach = aEntries.filter(([, c]) => c === 2);
+
+          // 飞机带单：每组三张带 1 张单牌
+          if (singleAttach.length === planeLen && attachments.length === planeLen) {
+            const topRank = planeRanks[planeRanks.length - 1];
+            return {
+              type: "plane",
+              primaryPower: shangyouRankPower({ kind: "standard", suit: "S", rank: topRank, id: "" }),
+              len: planeLen,
+              cards,
+            };
+          }
+          // 飞机带对：每组三张带 1 个对子
+          if (pairAttach.length === planeLen && attachments.length === planeLen * 2) {
+            const topRank = planeRanks[planeRanks.length - 1];
+            return {
+              type: "plane",
+              primaryPower: shangyouRankPower({ kind: "standard", suit: "S", rank: topRank, id: "" }),
+              len: planeLen,
+              cards,
+            };
+          }
+          // 飞机不带（三张的连续组即纯飞机）
+          if (attachments.length === 0 && planeCards.length === n) {
+            const topRank = planeRanks[planeRanks.length - 1];
+            return {
+              type: "plane",
+              primaryPower: shangyouRankPower({ kind: "standard", suit: "S", rank: topRank, id: "" }),
+              len: planeLen,
+              cards,
+            };
+          }
+        }
+      }
+    }
   }
 
   return null;
@@ -162,13 +271,17 @@ function bombTier(c: ShangyouCombo): number {
   return c.primaryPower + (c.len ?? 0) * 0.01;
 }
 
+function isBomb(t: ShangyouComboType): boolean {
+  return t === "bomb" || t === "jokerBomb";
+}
+
 /** a 是否比 b 大（炸弹管非炸；同型比 primary） */
 export function shangyouComboBeats(a: ShangyouCombo, b: ShangyouCombo): boolean {
-  const aBomb = a.type === "bomb" || a.type === "jokerBomb";
-  const bBomb = b.type === "bomb" || b.type === "jokerBomb";
-  if (aBomb && !bBomb) return true;
-  if (!aBomb && bBomb) return false;
-  if (aBomb && bBomb) return bombTier(a) > bombTier(b);
+  const aB = isBomb(a.type);
+  const bB = isBomb(b.type);
+  if (aB && !bB) return true;
+  if (!aB && bB) return false;
+  if (aB && bB) return bombTier(a) > bombTier(b);
   if (a.type !== b.type || (a.len ?? 0) !== (b.len ?? 0)) return false;
   return a.primaryPower > b.primaryPower;
 }
@@ -180,11 +293,11 @@ export function shangyouFollowOk(
   mustFollowPattern: boolean,
 ): boolean {
   if (!table) return true;
-  const tBomb = table.type === "bomb" || table.type === "jokerBomb";
-  const pBomb = play.type === "bomb" || play.type === "jokerBomb";
-  if (pBomb && !tBomb) return true;
-  if (!pBomb && tBomb) return false;
-  if (pBomb && tBomb) return shangyouComboBeats(play, table);
+  const tB = isBomb(table.type);
+  const pB = isBomb(play.type);
+  if (pB && !tB) return true;
+  if (!pB && tB) return false;
+  if (pB && tB) return shangyouComboBeats(play, table);
   if (play.type !== table.type || (play.len ?? 0) !== (table.len ?? 0)) return false;
   if (mustFollowPattern) return play.primaryPower > table.primaryPower;
   return play.primaryPower < table.primaryPower;

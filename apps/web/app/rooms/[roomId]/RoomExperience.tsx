@@ -446,8 +446,41 @@ export function RoomExperience({ roomId }: { roomId: string }) {
         </div>
       </div>
 
-      <section className="mt-8 grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-4">
+      <section className="mt-8 flex gap-6">
+        {(isDz || isSy) && (
+          <div className="w-[180px] flex-shrink-0 rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-3 text-xs">
+            <p className="font-medium text-[var(--accent)] mb-2">牌型（大→小）</p>
+            {room.gameType === "doudizhu" ? (
+              <div className="flex flex-col gap-1 text-[var(--muted)]">
+                <span>🚀 火箭</span>
+                <span>💣 炸弹</span>
+                <span>🛩️ 飞机带牌</span>
+                <span>🔗 连对</span>
+                <span>🔢 顺子</span>
+                <span>3️⃣ 三张</span>
+                <span>3️⃣+1 三带一</span>
+                <span>3️⃣+2 三带二</span>
+                <span>4️⃣+1+1 四带二单</span>
+                <span>4️⃣+2+2 四带两对</span>
+                <span>2️⃣ 对子</span>
+                <span>1️⃣ 单张</span>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-1 text-[var(--muted)]">
+                <span>🃏🃏 王炸</span>
+                <span>💣 炸弹</span>
+                <span>🛩️ 飞机带牌</span>
+                <span>🔗 连对</span>
+                <span>🔢 顺子</span>
+                <span>3️⃣+1 三带一</span>
+                <span>3️⃣ 三张</span>
+                <span>2️⃣ 对子</span>
+                <span>1️⃣ 单张</span>
+              </div>
+            )}
+          </div>
+        )}
+        <div className="flex-1 space-y-4">
           {gs && "phase" in gs && gs.phase === "stub" && (
             <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
               {(gs as StubGameState).message}
@@ -999,7 +1032,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
           )}
         </div>
 
-        <div className="space-y-6">
+        <div className="w-56 flex-shrink-0 space-y-6">
           <div className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-4">
             <h3 className="font-medium">计分</h3>
             <ul className="mt-2 space-y-2 text-sm">

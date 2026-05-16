@@ -36,6 +36,7 @@ export interface ShangyouPublicState {
     mustFollowPattern: boolean;
     mustAnnounceLastCount: boolean;
     scoringMode: string;
+    allowTripleSingle: boolean;
   };
 }
 
@@ -244,6 +245,7 @@ export class ShangyouRoom {
     const combo = classifyShangyouPlay(picked, {
       allowBomb: this.rules.allowBomb,
       allowJokerBomb: this.rules.allowJokerBomb && this.rules.deckCount === 2,
+      allowTripleSingle: this.rules.allowTripleSingle,
     });
     if (!combo) return { ok: false, error: "非法牌型" };
 
@@ -337,6 +339,7 @@ export class ShangyouRoom {
         mustFollowPattern: this.rules.mustFollowPattern,
         mustAnnounceLastCount: this.rules.mustAnnounceLastCount,
         scoringMode: this.rules.scoringMode,
+        allowTripleSingle: this.rules.allowTripleSingle,
       },
     };
   }

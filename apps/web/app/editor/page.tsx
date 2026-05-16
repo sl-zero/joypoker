@@ -754,6 +754,16 @@ export default function EditorPage() {
             <label className="flex items-center gap-2 text-sm">
               <input
                 type="checkbox"
+                checked={shangyou.allowTripleSingle}
+                onChange={(e) =>
+                  setShangyou({ ...shangyou, allowTripleSingle: e.target.checked })
+                }
+              />
+              允许三带一
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
                 checked={shangyou.mustAnnounceLastCount}
                 onChange={(e) =>
                   setShangyou({

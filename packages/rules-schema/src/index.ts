@@ -79,6 +79,8 @@ export const shangyouRulesSchema = z.object({
   allowBomb: z.boolean().default(true),
   /** 王炸/大小王作炸弹（2 副牌常见） */
   allowJokerBomb: z.boolean().default(true),
+  /** 是否允许三带一 */
+  allowTripleSingle: z.boolean().default(true),
   /** 最后一手必须报单/报双（部分桌） */
   mustAnnounceLastCount: z.boolean().default(false),
   /** 计分：头游二游名次分 / 仅娱乐不计分 */
