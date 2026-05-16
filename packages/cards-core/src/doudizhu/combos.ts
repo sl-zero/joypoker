@@ -96,8 +96,13 @@ export function classifyDoudizhuPlay(
     }
   }
 
+  // 单张王（大王或小王）
+  if (jokers.length === 1 && cards.length === 1) {
+    return { type: "single", primaryPower: doudizhuRankPower(jokers[0]), cards };
+  }
+
   if (jokers.length > 0 && jokers.length !== cards.length) {
-    // 王不能与非王组合（除火箭）
+    // 王不能与非王组合（除火箭和单张王）
     return null;
   }
 
