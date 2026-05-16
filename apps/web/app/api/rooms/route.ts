@@ -15,6 +15,7 @@ const createSchema = z.object({
   name: z.string().max(60).optional(),
   gameType: z.enum(["blackjack", "doudizhu", "texas", "shangyou"]),
   ruleSnapshot: z.unknown(),
+  source: z.string().optional(),
 });
 
 export async function POST(req: Request) {
@@ -37,7 +38,12 @@ export async function POST(req: Request) {
         gameType: body.gameType,
         ruleSnapshot: ruleSnapshot as object,
         members: {
-          create: { userId: session.user.id, seatOrder: 0 },
+          create: {
+            userId: session.user.id,
+            totalScore: 0,
+            seatOrder: 0,
+            source: body.source ?? "editor",
+          },
         },
       },
     });
