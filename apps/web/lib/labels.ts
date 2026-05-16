@@ -113,16 +113,15 @@ export function comboTypeLabel(t: string, len?: number): string {
   return base;
 }
 
-/** Texas Holdem hand rank → Chinese label. Rank from evaluate.ts (1-10 scale). */
-export function texasHandLabel(rank: number): string {
-  if (rank >= 10) return "皇家同花顺";
-  if (rank >= 9) return "同花顺";
-  if (rank >= 8) return "四条";
-  if (rank >= 7) return "葫芦";
-  if (rank >= 6) return "同花";
-  if (rank >= 5) return "顺子";
-  if (rank >= 4) return "三条";
-  if (rank >= 3) return "两对";
-  if (rank >= 2) return "一对";
+/** Texas Holdem hand category (0-8) → Chinese label. */
+export function texasHandLabel(category: number): string {
+  if (category >= 8) return "同花顺";
+  if (category >= 7) return "四条";
+  if (category >= 6) return "葫芦";
+  if (category >= 5) return "同花";
+  if (category >= 4) return "顺子";
+  if (category >= 3) return "三条";
+  if (category >= 2) return "两对";
+  if (category >= 1) return "一对";
   return "高牌";
 }

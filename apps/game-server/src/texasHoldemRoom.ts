@@ -53,7 +53,7 @@ export interface TexasPublicState {
     userId: string;
     name: string;
     hole: { suit: string; rank: string }[];
-    handRank: TexasHandStrength;
+    handRank: number;
   }[];
 }
 
@@ -463,7 +463,7 @@ export class TexasHoldemRoom {
           userId: p.userId,
           name: p.name,
           hole: p.hole.map(c => ({ suit: c.suit, rank: c.rank })),
-          handRank: p.handRank!,
+          handRank: p.handRank!.category,
         })) : undefined,
     };
   }

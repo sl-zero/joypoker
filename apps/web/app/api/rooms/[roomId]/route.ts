@@ -45,24 +45,25 @@ export async function POST(
   if (body.action !== "join") {
     return NextResponse.json({ error: "未知操作" }, { status: 400 });
   }
-  const room = await prisma.room.findUnique({
-    where: { id: roomId },
-    include: { members: true },
+  const already = await prisma.roomMember.findFirst({
+    where: { roomId, userId: session.user.id },
   });
-  if (!room) return NextResponse.json({ error: "房间不存在" }, { status: 404 });
-  const already = room.members.find((m) => m.userId === session.user.id);
   if (already) {
     await prisma.roomMember.update({
       where: { id: already.id },
       data: { status: "active" },
     });
   } else {
-    const maxSeat = room.members.reduce((a, m) => Math.max(a, m.seatOrder ?? 0), -1);
+    const maxSeat = await prisma.roomMember.findFirst({
+      where: { roomId },
+      orderBy: { seatOrder: "desc" },
+      select: { seatOrder: true },
+    });
     await prisma.roomMember.create({
       data: {
-        roomId: room.id,
+        roomId,
         userId: session.user.id,
-        seatOrder: maxSeat + 1,
+        seatOrder: (maxSeat?.seatOrder ?? -1) + 1,
         source: body.source ?? "editor",
       },
     });
