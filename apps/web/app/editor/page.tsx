@@ -142,6 +142,9 @@ export default function EditorPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-[var(--muted)] hover:text-[var(--text)] mb-4">
+        ← 返回
+      </Link>
       <h1 className="text-2xl font-semibold">规则编辑器</h1>
       <p className="mt-2 text-sm text-[var(--muted)]">
         选择玩法与预设，再按需微调；规则会快照写入房间。二十一点已支持联机牌桌，其余玩法为规则配置与占位。

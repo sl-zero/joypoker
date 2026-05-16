@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -20,6 +21,9 @@ export default function JoinPage() {
 
   return (
     <main className="mx-auto max-w-md px-6 py-16">
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-[var(--muted)] hover:text-[var(--text)] mb-4">
+        ← 返回
+      </Link>
       <h1 className="text-2xl font-semibold">加入房间</h1>
       <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
         <label className="flex flex-col gap-1 text-sm">
