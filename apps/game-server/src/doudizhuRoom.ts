@@ -3,6 +3,7 @@ import {
   buildDoudizhuDeck,
   classifyDoudizhuPlay,
   doudizhuFollowOk,
+  doudizhuRankPower,
   type DoudizhuCombo,
 } from "@poker/cards-core";
 import type { DoudizhuRules } from "@poker/rules-schema";
@@ -25,7 +26,7 @@ export interface DoudizhuPublicState {
   currentUserId: string | null;
   landlordUserId: string | null;
   bottomCards: { kind: string; suit?: string; rank?: string; joker?: string; id: string }[] | null;
-  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number } | null;
+  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number; cards?: { kind: string; suit?: string; rank?: string; joker?: string }[] } | null;
   lastPlayUserId: string | null;
   passesSinceLastPlay: number;
   freeTable: boolean;
@@ -103,6 +104,18 @@ export class DoudizhuRoom {
       hand: rest.slice(i * per, (i + 1) * per),
       bid: -1,
     }));
+    const suitOrder: Record<string, number> = { S: 0, H: 1, D: 2, C: 3 };
+    for (const p of this.players) {
+      p.hand.sort((a, b) => {
+        const pa = doudizhuRankPower(a);
+        const pb = doudizhuRankPower(b);
+        if (pa !== pb) return pa - pb;
+        if (a.kind === "standard" && b.kind === "standard") {
+          return (suitOrder[a.suit] ?? 0) - (suitOrder[b.suit] ?? 0);
+        }
+        return 0;
+      });
+    }
     this.phase = "bid";
     this.landlordUserId = null;
     this.currentSeat = 0;
@@ -315,6 +328,12 @@ export class DoudizhuRoom {
             primaryPower: this.tableCombo.primaryPower,
             len: this.tableCombo.len,
             bombLen: this.tableCombo.bombLen,
+            cards: this.tableCombo.cards.map((c) => ({
+              kind: c.kind,
+              suit: c.kind === "standard" ? c.suit : undefined,
+              rank: c.kind === "standard" ? c.rank : undefined,
+              joker: c.kind === "joker" ? c.joker : undefined,
+            })),
           }
         : null,
       lastPlayUserId: this.lastPlayUserId,

@@ -3,6 +3,7 @@ import {
   buildShangyouDeck,
   classifyShangyouPlay,
   shangyouFollowOk,
+  shangyouRankPower,
   type ShangyouCombo,
 } from "@poker/cards-core";
 import type { ShangyouRules } from "@poker/rules-schema";
@@ -24,7 +25,7 @@ export interface ShangyouPublicState {
   phase: ShangyouPhase;
   players: ShangyouPlayerPublic[];
   currentUserId: string | null;
-  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number } | null;
+  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number; cards?: { kind: string; suit?: string; rank?: string; joker?: string }[] } | null;
   lastPlayUserId: string | null;
   passesSinceLastPlay: number;
   freeTable: boolean;
@@ -120,6 +121,18 @@ export class ShangyouRoom {
       name: m.name ?? "玩家",
       hand: deck.slice(i * per, (i + 1) * per),
     }));
+    const suitOrder: Record<string, number> = { S: 0, H: 1, D: 2, C: 3 };
+    for (const p of this.players) {
+      p.hand.sort((a, b) => {
+        const pa = shangyouRankPower(a);
+        const pb = shangyouRankPower(b);
+        if (pa !== pb) return pa - pb;
+        if (a.kind === "standard" && b.kind === "standard") {
+          return (suitOrder[a.suit] ?? 0) - (suitOrder[b.suit] ?? 0);
+        }
+        return 0;
+      });
+    }
     this.finishOrder = [];
     this.phase = "play";
     this.tableCombo = null;
@@ -303,6 +316,12 @@ export class ShangyouRoom {
             primaryPower: this.tableCombo.primaryPower,
             len: this.tableCombo.len,
             bombLen: this.tableCombo.bombLen,
+            cards: this.tableCombo.cards.map((c) => ({
+              kind: c.kind,
+              suit: c.kind === "standard" ? c.suit : undefined,
+              rank: c.kind === "standard" ? c.rank : undefined,
+              joker: c.kind === "joker" ? c.joker : undefined,
+            })),
           }
         : null,
       lastPlayUserId: this.lastPlayUserId,

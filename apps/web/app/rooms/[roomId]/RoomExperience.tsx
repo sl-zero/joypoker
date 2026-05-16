@@ -34,6 +34,7 @@ import {
   bidStyleLabel,
   firstLeadLabel,
   scoringModeLabel,
+  comboTypeLabel,
 } from "@/lib/labels";
 
 type RoomPayload = {
@@ -578,10 +579,21 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                   {s.rulesEcho.mustFollowPattern ? " · 须跟大" : " · 可垫小"}
                 </p>
                 {s.tableCombo && (
-                  <p className="mt-2 text-sm">
-                    桌面：{s.tableCombo.type} · 力 {s.tableCombo.primaryPower}
-                    {s.freeTable ? " · 自由出牌" : ""}
-                  </p>
+                  <div className="mt-2">
+                    <div className="flex flex-wrap items-center gap-1">
+                      {s.tableCombo.cards?.map((c, i) =>
+                        c.kind === "joker" || c.joker ? (
+                          <GameCardBadge key={i} c={c as { kind: string; suit?: string; rank?: string; joker?: string; id: string }} />
+                        ) : (
+                          <CardBadge key={i} c={{ suit: c.suit!, rank: c.rank! }} />
+                        )
+                      )}
+                      <span className="ml-1 text-xs text-[var(--muted)]">
+                        — {comboTypeLabel(s.tableCombo.type, s.tableCombo.len)}
+                      </span>
+                    </div>
+                    {s.freeTable && <span className="text-xs text-[var(--muted)]">自由出牌</span>}
+                  </div>
                 )}
                 <div className="mt-4 space-y-3">
                   {s.players.map((p) => (
@@ -689,9 +701,18 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                   </div>
                 )}
                 {d.tableCombo && (
-                  <p className="mt-2 text-sm">
-                    上一手：{d.tableCombo.type} · {d.tableCombo.primaryPower}
-                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-1">
+                    {d.tableCombo.cards?.map((c, i) =>
+                      c.kind === "joker" || c.joker ? (
+                        <GameCardBadge key={i} c={c as { kind: string; suit?: string; rank?: string; joker?: string; id: string }} />
+                      ) : (
+                        <CardBadge key={i} c={{ suit: c.suit!, rank: c.rank! }} />
+                      )
+                    )}
+                    <span className="ml-1 text-xs text-[var(--muted)]">
+                      — {comboTypeLabel(d.tableCombo.type, d.tableCombo.len)}
+                    </span>
+                  </div>
                 )}
                 <div className="mt-4 space-y-2">
                   {d.players.map((p) => (

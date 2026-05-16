@@ -89,3 +89,26 @@ export function boolEnableLabel(v: boolean): string {
 export function boolYesLabel(v: boolean): string {
   return v ? "是" : "否";
 }
+
+export function comboTypeLabel(t: string, len?: number): string {
+  const map: Record<string, string> = {
+    single: "单张",
+    pair: "对子",
+    triple: "三张",
+    triple_single: "三带一",
+    triple_pair: "三带二",
+    straight: "顺子",
+    straight_pairs: "连对",
+    plane: "飞机",
+    four_two_singles: "四带二（单）",
+    four_two_pairs: "四带二（对）",
+    bomb: "炸弹",
+    rocket: "火箭",
+  };
+  const base = map[t] ?? t;
+  if (len && (t === "straight" || t === "straight_pairs" || t === "plane")) {
+    return `${base}（${len} 张）`;
+  }
+  if (t === "bomb" && len) return `${base}（${len} 张）`;
+  return base;
+}

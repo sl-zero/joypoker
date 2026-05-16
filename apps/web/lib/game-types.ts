@@ -48,7 +48,7 @@ export interface ShangyouPublicState {
   phase: "lobby" | "play" | "payout";
   players: ShangyouPlayerPublic[];
   currentUserId: string | null;
-  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number } | null;
+  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number; cards?: { kind: string; suit?: string; rank?: string; joker?: string }[] } | null;
   lastPlayUserId: string | null;
   passesSinceLastPlay: number;
   freeTable: boolean;
@@ -78,7 +78,7 @@ export interface DoudizhuPublicState {
   currentUserId: string | null;
   landlordUserId: string | null;
   bottomCards: { kind: string; suit?: string; rank?: string; joker?: string; id: string }[] | null;
-  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number } | null;
+  tableCombo: { type: string; primaryPower: number; len?: number; bombLen?: number; cards?: { kind: string; suit?: string; rank?: string; joker?: string }[] } | null;
   lastPlayUserId: string | null;
   passesSinceLastPlay: number;
   freeTable: boolean;
