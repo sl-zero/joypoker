@@ -39,18 +39,7 @@ export default function PlayingCard({
       });
     }
     if (joker) {
-      const isBig = joker === "BJ";
-      const c = isBig ? "#d97706" : "#6d28d9";
-      return renderCardToDataUri({
-        suit: 0,
-        rank: 13,
-        letters: isBig ? "大" : "小",
-        suitcolor: c,
-        rankcolor: c,
-        cardcolor: "#fcfcfc",
-        opacity: 0.35,
-        courtcolors: `${c},${c},#a78bfa,#1a1a1a,${c},1.3`,
-      });
+      return joker === "BJ" ? "/joker_red.png" : "/joker_black.png";
     }
     const s = SUIT_MAP[suit ?? "S"] ?? 0;
     const r = RANK_MAP[rank ?? "A"] ?? 1;
