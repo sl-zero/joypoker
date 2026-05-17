@@ -645,35 +645,37 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                           {p.teamId !== undefined ? ` · 队${p.teamId + 1}` : ""}
                           {p.userId === session.user.id ? "（你）" : ""}
                         </span>
-                        {p.finishedRank != null && <span>第 {p.finishedRank} 名</span>}
+                        <span className="flex items-center gap-2">
+                          {p.finishedRank != null && <span>第 {p.finishedRank} 名</span>}
+                          {p.userId !== session.user.id && (
+                            p.hand ? (
+                              <span className="flex -space-x-5">{p.hand.map(c => <GameCardBadge key={c.id} c={c} compact />)}</span>
+                            ) : (
+                              <span className="flex -space-x-5 items-center">
+                                {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} small />))}
+                              </span>
+                            )
+                          )}
+                          <span className="text-[var(--muted)]">{p.handCount} 张</span>
+                        </span>
                       </div>
-                      {p.hand ? (
-                        <div className={`mt-2 flex ${p.hand.length <= 7 ? "flex-wrap gap-1" : "-space-x-5"}`}>
-                          {p.hand.map((c) => (
-                            <GameCardBadge
-                              key={c.id}
-                              c={c}
-                              compact
-                              selected={sySelected.includes(c.id)}
-                              onToggle={
-                                s.phase === "play" && s.currentUserId === session.user.id
-                                  ? toggleSy
-                                  : undefined
-                              }
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="mt-2 flex -space-x-4">
-                          {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (
-                            <CardBack key={i} small />
-                          ))}
-                          {p.handCount > 8 && <span className="self-end text-xs text-[var(--muted)] ml-2">+{p.handCount - 8}</span>}
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
+                {/* self hand below player list */}
+                {(() => { const me = s.players.find(x => x.userId === session.user.id); return me?.hand ? (
+                  <div className={`mt-4 flex flex-wrap ${me.hand.length <= 10 ? "gap-1" : "gap-0.5 -space-x-3"}`}>
+                    {me.hand.map((c) => (
+                      <GameCardBadge
+                        key={c.id}
+                        c={c}
+                        compact
+                        selected={sySelected.includes(c.id)}
+                        onToggle={s.phase === "play" && s.currentUserId === session.user.id ? toggleSy : undefined}
+                      />
+                    ))}
+                  </div>
+                ) : null; })()}
                 {s.phase === "lobby" && isOwner && (
                   <button
                     type="button"
@@ -769,17 +771,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         {p.isLandlord ? "（地主）" : ""}
                         {p.userId === session.user.id ? "（你）" : ""}
                       </span>
-                      <span className="flex items-center gap-1">
-                        {p.hand ? (
-                          <span className="flex -space-x-5">{p.hand.map(c => <GameCardBadge key={c.id} c={c} compact />)}</span>
-                        ) : (
-                          <span className="flex -space-x-5 items-center">
-                            {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} small />))}
-                            {p.handCount > 8 && <span className="text-xs text-[var(--muted)] ml-1">+{p.handCount - 8}</span>}
-                          </span>
-                        )}
-                        <span>{p.handCount} 张</span>
-                      </span>
+                      <span>{p.handCount} 张</span>
                     </div>
                   ))}
                 </div>
