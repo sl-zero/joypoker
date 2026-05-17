@@ -183,7 +183,19 @@ export class DoudizhuRoom {
     this.landlordUserId = userId;
     const lp = this.players.find((p) => p.userId === userId);
     this.revealedBottom = [...this.bottom];
-    if (lp) lp.hand.push(...this.bottom);
+    if (lp) {
+      lp.hand.push(...this.bottom);
+      const suitOrder: Record<string, number> = { S: 0, H: 1, D: 2, C: 3 };
+      lp.hand.sort((a, b) => {
+        const pa = doudizhuRankPower(a);
+        const pb = doudizhuRankPower(b);
+        if (pa !== pb) return pa - pb;
+        if (a.kind === "standard" && b.kind === "standard") {
+          return (suitOrder[a.suit] ?? 0) - (suitOrder[b.suit] ?? 0);
+        }
+        return 0;
+      });
+    }
     this.bottom = [];
     this.phase = "play";
     this.tableCombo = null;

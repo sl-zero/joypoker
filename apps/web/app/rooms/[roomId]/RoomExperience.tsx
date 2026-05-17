@@ -65,8 +65,10 @@ function formatScore(tenths: number) {
   return (tenths / 10).toFixed(1);
 }
 
-function CardBack() {
-  return <PlayingCard back width={56} height={80} className="inline-block" />;
+function CardBack({ small }: { small?: boolean }) {
+  const w = small ? 32 : 56;
+  const h = small ? 46 : 80;
+  return <PlayingCard back width={w} height={h} className="inline-block flex-shrink-0" />;
 }
 
 function CardBadge({ c, back }: { c: { suit: string; rank: string }; back?: boolean }) {
@@ -348,7 +350,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
       s.on("chat", () => {
         void loadRoom();
       });
-      s.on("presence", (p: { count: number }) => setPresence(p.count));
+      s.on("presence", (p: { count: number }) => { setPresence(p.count); void loadRoom(); });
       s.on("scoresUpdated", () => void loadRoom());
       s.on("errorMsg", (e: { message?: string }) => {
         if (e.message) alert(e.message);
@@ -545,7 +547,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                     ) : (
                       <div className="mt-2 flex -space-x-4">
                         {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (
-                          <CardBack key={i} />
+                          <CardBack key={i} small />
                         ))}
                         {p.handCount > 8 && (
                           <span className="self-end text-xs text-[var(--muted)] ml-2">+{p.handCount - 8}</span>
@@ -663,7 +665,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                       ) : (
                         <div className="mt-2 flex -space-x-4">
                           {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (
-                            <CardBack key={i} />
+                            <CardBack key={i} small />
                           ))}
                           {p.handCount > 8 && <span className="self-end text-xs text-[var(--muted)] ml-2">+{p.handCount - 8}</span>}
                         </div>
@@ -766,8 +768,8 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         {p.isLandlord ? "（地主）" : ""}
                         {p.userId === session.user.id ? "（你）" : ""}
                       </span>
-                      <span className="flex -space-x-4 items-center">
-                        {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} />))}
+                      <span className="flex -space-x-5 items-center">
+                        {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} small />))}
                         {p.handCount > 8 && <span className="text-xs text-[var(--muted)] ml-1">+{p.handCount - 8}</span>}
                         <span className="ml-2">{p.handCount} 张</span>
                       </span>
