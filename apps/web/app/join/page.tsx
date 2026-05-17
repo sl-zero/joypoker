@@ -16,7 +16,7 @@ export default function JoinPage() {
       alert(data.error ?? "未找到房间");
       return;
     }
-    router.push(`/rooms/${data.room.id}`);
+    router.push(`/rooms/${data.room.id}?from=join`);
   }
 
   return (

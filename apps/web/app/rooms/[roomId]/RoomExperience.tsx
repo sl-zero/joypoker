@@ -647,12 +647,13 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         </span>
                         {p.finishedRank != null && <span>第 {p.finishedRank} 名</span>}
                       </div>
-                      {p.userId === session.user.id && p.hand ? (
-                        <div className={`mt-2 flex ${p.hand.length <= 7 ? "flex-wrap gap-1" : "-space-x-4"}`}>
+                      {p.hand ? (
+                        <div className={`mt-2 flex ${p.hand.length <= 7 ? "flex-wrap gap-1" : "-space-x-5"}`}>
                           {p.hand.map((c) => (
                             <GameCardBadge
                               key={c.id}
                               c={c}
+                              compact
                               selected={sySelected.includes(c.id)}
                               onToggle={
                                 s.phase === "play" && s.currentUserId === session.user.id
@@ -768,22 +769,29 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         {p.isLandlord ? "（地主）" : ""}
                         {p.userId === session.user.id ? "（你）" : ""}
                       </span>
-                      <span className="flex -space-x-5 items-center">
-                        {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} small />))}
-                        {p.handCount > 8 && <span className="text-xs text-[var(--muted)] ml-1">+{p.handCount - 8}</span>}
-                        <span className="ml-2">{p.handCount} 张</span>
+                      <span className="flex items-center gap-1">
+                        {p.hand ? (
+                          <span className="flex -space-x-5">{p.hand.map(c => <GameCardBadge key={c.id} c={c} compact />)}</span>
+                        ) : (
+                          <span className="flex -space-x-5 items-center">
+                            {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} small />))}
+                            {p.handCount > 8 && <span className="text-xs text-[var(--muted)] ml-1">+{p.handCount - 8}</span>}
+                          </span>
+                        )}
+                        <span>{p.handCount} 张</span>
                       </span>
                     </div>
                   ))}
                 </div>
                 {d.phase === "play" && (
-                  <div className="mt-4 flex -space-x-4 flex-wrap">
+                  <div className="mt-4 flex -space-x-5 flex-wrap">
                     {d.players
                       .find((x) => x.userId === session.user.id)
                       ?.hand?.map((c) => (
                         <GameCardBadge
                           key={c.id}
                           c={c}
+                          compact
                           selected={dzSelected.includes(c.id)}
                           onToggle={
                             d.currentUserId === session.user.id
@@ -1057,11 +1065,14 @@ export function RoomExperience({ roomId }: { roomId: string }) {
               <button
                 type="button"
                 onClick={() => socketRef.current?.emit("spectate")}
-                className="mt-3 w-full rounded border border-[var(--surface2)] px-3 py-1.5 text-xs text-[var(--muted)] hover:bg-[var(--surface)] transition-colors"
+                className={`mt-3 w-full rounded border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  room.members.find(m => m.userId === session.user.id)?.status === "spectating"
+                    ? "border-amber-400/60 bg-amber-400/10 text-amber-400 hover:bg-amber-400/20"
+                    : "border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)]/10"
+                }`}
               >
                 {room.members.find(m => m.userId === session.user.id)?.status === "spectating"
-                  ? "取消观战"
-                  : "观战"}
+                  ? "取消观战" : "观战"}
               </button>
             )}
           </div>
@@ -1078,7 +1089,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
             </div>
             <div className="mt-2 flex gap-2">
               <input
-                className="flex-1 rounded border border-[var(--surface2)] bg-[var(--bg)] px-2 py-1 text-sm"
+                className="min-w-0 flex-1 rounded border border-[var(--surface2)] bg-[var(--bg)] px-2 py-1 text-sm"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -1090,7 +1101,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
               />
               <button
                 type="button"
-                className="rounded bg-[var(--accent)] px-3 py-1 text-sm text-[var(--bg)]"
+                className="flex-shrink-0 rounded bg-[var(--accent)] px-3 py-1 text-sm whitespace-nowrap text-[var(--bg)]"
                 onClick={sendChat}
               >
                 发送
