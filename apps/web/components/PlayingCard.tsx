@@ -13,18 +13,31 @@ export default function PlayingCard({
   suit,
   rank,
   joker,
+  back,
+  selected,
   className = "",
-  width = 48,
-  height = 67,
+  width = 56,
+  height = 80,
 }: {
   suit?: string;
   rank?: string;
   joker?: string;
+  back?: boolean;
+  selected?: boolean;
   className?: string;
   width?: number;
   height?: number;
 }) {
   const src = useMemo(() => {
+    if (back) {
+      return renderCardToDataUri({
+        rank: 0,
+        backcolor: "#1a3a5c",
+        backtext: "",
+        borderradius: 8,
+        shadow: "1,1,2",
+      });
+    }
     if (joker) {
       const color = joker === "BJ" ? "#d97706" : "#6d28d9";
       return renderCardToDataUri({
@@ -46,15 +59,20 @@ export default function PlayingCard({
       borderradius: 8,
       shadow: "1,1,2",
     });
-  }, [suit, rank, joker]);
+  }, [suit, rank, joker, back]);
 
   return (
     <img
       src={src}
-      alt={joker ? (joker === "BJ" ? "大王" : "小王") : `${rank ?? ""}${suit ?? ""}`}
+      alt={back ? "背面" : joker ? (joker === "BJ" ? "大王" : "小王") : `${rank ?? ""}${suit ?? ""}`}
       width={width}
       height={height}
       className={className}
+      style={{
+        transition: "transform 0.12s ease",
+        transform: selected ? "translate(-1px, -5px)" : undefined,
+      }}
+      draggable={false}
     />
   );
 }

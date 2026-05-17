@@ -65,30 +65,39 @@ function formatScore(tenths: number) {
   return (tenths / 10).toFixed(1);
 }
 
-function CardBadge({ c }: { c: { suit: string; rank: string } }) {
-  return <PlayingCard suit={c.suit} rank={c.rank} width={39} height={55} className="inline-block" />;
+function CardBack() {
+  return <PlayingCard back width={56} height={80} className="inline-block" />;
+}
+
+function CardBadge({ c, back }: { c: { suit: string; rank: string }; back?: boolean }) {
+  if (back) return <CardBack />;
+  return <PlayingCard suit={c.suit} rank={c.rank} width={56} height={80} className="inline-block" />;
 }
 
 function GameCardBadge({
   c,
   selected,
   onToggle,
+  compact,
 }: {
   c: { kind: string; suit?: string; rank?: string; joker?: string; id: string };
   selected?: boolean;
   onToggle?: (id: string) => void;
+  compact?: boolean;
 }) {
+  const w = compact ? 48 : 56;
+  const h = compact ? 68 : 80;
   const card = c.kind === "joker" || c.joker ? (
-    <PlayingCard joker={c.joker ?? "SJ"} width={39} height={55} className="inline-block" />
+    <PlayingCard joker={c.joker ?? "SJ"} width={w} height={h} selected={selected} />
   ) : (
-    <PlayingCard suit={c.suit} rank={c.rank} width={39} height={55} className="inline-block" />
+    <PlayingCard suit={c.suit} rank={c.rank} width={w} height={h} selected={selected} />
   );
   if (onToggle) {
     return (
       <button
         type="button"
         onClick={() => onToggle(c.id)}
-        className={`rounded ${selected ? "ring-2 ring-[var(--accent)] ring-offset-1 ring-offset-[var(--bg)]" : ""}`}
+        className="leading-[0]"
       >
         {card}
       </button>
@@ -489,12 +498,10 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                 <p className="text-sm text-[var(--muted)]">庄家</p>
                 <div className="mt-2 flex flex-wrap gap-1">
                   {gs.dealerHoleHidden ? (
-                    <>
+                    <div className="flex items-center gap-2">
                       {gs.dealerUp && <CardBadge c={gs.dealerUp} />}
-                      <span className="rounded border border-[var(--surface2)] px-2 py-0.5 font-mono text-sm">
-                        暗牌
-                      </span>
-                    </>
+                      <CardBack />
+                    </div>
                   ) : (
                     (gs.dealerHand ?? []).map((c, i) => <CardBadge key={i} c={c} />)
                   )}
@@ -536,13 +543,13 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         ))}
                       </div>
                     ) : (
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        {Array.from({ length: p.handCount }).map((_, i) => (
-                          <span
-                            key={i}
-                            className="inline-block h-8 w-6 rounded border border-[var(--surface2)] bg-[var(--surface)]"
-                          />
+                      <div className="mt-2 flex -space-x-4">
+                        {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (
+                          <CardBack key={i} />
                         ))}
+                        {p.handCount > 8 && (
+                          <span className="self-end text-xs text-[var(--muted)] ml-2">+{p.handCount - 8}</span>
+                        )}
                       </div>
                     )}
                   </div>
@@ -639,7 +646,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         {p.finishedRank != null && <span>第 {p.finishedRank} 名</span>}
                       </div>
                       {p.userId === session.user.id && p.hand ? (
-                        <div className="mt-2 flex flex-wrap gap-1">
+                        <div className={`mt-2 flex ${p.hand.length <= 7 ? "flex-wrap gap-1" : "-space-x-4"}`}>
                           {p.hand.map((c) => (
                             <GameCardBadge
                               key={c.id}
@@ -654,7 +661,12 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                           ))}
                         </div>
                       ) : (
-                        <div className="mt-2 text-[var(--muted)]">{p.handCount} 张</div>
+                        <div className="mt-2 flex -space-x-4">
+                          {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (
+                            <CardBack key={i} />
+                          ))}
+                          {p.handCount > 8 && <span className="self-end text-xs text-[var(--muted)] ml-2">+{p.handCount - 8}</span>}
+                        </div>
                       )}
                     </div>
                   ))}
@@ -754,12 +766,16 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                         {p.isLandlord ? "（地主）" : ""}
                         {p.userId === session.user.id ? "（你）" : ""}
                       </span>
-                      <span>{p.handCount} 张</span>
+                      <span className="flex -space-x-4 items-center">
+                        {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} />))}
+                        {p.handCount > 8 && <span className="text-xs text-[var(--muted)] ml-1">+{p.handCount - 8}</span>}
+                        <span className="ml-2">{p.handCount} 张</span>
+                      </span>
                     </div>
                   ))}
                 </div>
                 {d.phase === "play" && (
-                  <div className="mt-4 flex flex-wrap gap-1">
+                  <div className="mt-4 flex -space-x-4 flex-wrap">
                     {d.players
                       .find((x) => x.userId === session.user.id)
                       ?.hand?.map((c) => (
