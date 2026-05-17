@@ -52,20 +52,25 @@ export default function PlayingCard({
     });
   }, [suit, rank, joker, back]);
 
-  const filter = joker && joker !== "BJ" ? "grayscale(100%) brightness(0.65)" : undefined;
+  const grayJoker = joker && joker !== "BJ";
   return (
-    <img
-      src={src}
-      alt={back ? "背面" : joker ? (joker === "BJ" ? "大王" : "小王") : `${rank ?? ""}${suit ?? ""}`}
-      width={width}
-      height={height}
+    <span
       className={className}
       style={{
+        display: "inline-block",
+        position: "relative",
         transition: "transform 0.12s ease",
         transform: selected ? "translate(-1px, -5px)" : undefined,
-        filter,
       }}
-      draggable={false}
-    />
+    >
+      <img
+        src={src}
+        alt={back ? "背面" : joker ? (joker === "BJ" ? "大王" : "小王") : `${rank ?? ""}${suit ?? ""}`}
+        width={width}
+        height={height}
+        style={grayJoker ? { filter: "grayscale(100%)" } : undefined}
+        draggable={false}
+      />
+    </span>
   );
 }
