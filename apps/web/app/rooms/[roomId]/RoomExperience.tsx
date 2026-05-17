@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { io } from "socket.io-client";
 import Link from "next/link";
+import PlayingCard from "@/components/PlayingCard";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type {
@@ -65,19 +66,7 @@ function formatScore(tenths: number) {
 }
 
 function CardBadge({ c }: { c: { suit: string; rank: string } }) {
-  const red = c.suit === "H" || c.suit === "D";
-  const suit =
-    c.suit === "H" ? "♥" : c.suit === "D" ? "♦" : c.suit === "C" ? "♣" : "♠";
-  return (
-    <span
-      className={`inline-flex min-w-[2.25rem] items-center justify-center rounded border border-[var(--surface2)] px-1 py-0.5 font-mono text-sm ${
-        red ? "text-rose-400" : "text-slate-200"
-      }`}
-    >
-      {c.rank}
-      {suit}
-    </span>
-  );
+  return <PlayingCard suit={c.suit} rank={c.rank} width={39} height={55} className="inline-block" />;
 }
 
 function GameCardBadge({
@@ -89,24 +78,23 @@ function GameCardBadge({
   selected?: boolean;
   onToggle?: (id: string) => void;
 }) {
-  const inner =
-    c.kind === "joker" || c.joker ? (
-      <span className="text-amber-200">{c.joker === "SJ" ? "小王" : c.joker === "BJ" ? "大王" : "王"}</span>
-    ) : (
-      <CardBadge c={{ suit: c.suit!, rank: c.rank! }} />
-    );
+  const card = c.kind === "joker" || c.joker ? (
+    <PlayingCard joker={c.joker ?? "SJ"} width={39} height={55} className="inline-block" />
+  ) : (
+    <PlayingCard suit={c.suit} rank={c.rank} width={39} height={55} className="inline-block" />
+  );
   if (onToggle) {
     return (
       <button
         type="button"
         onClick={() => onToggle(c.id)}
-        className={`rounded border px-0.5 py-0.5 ${selected ? "border-[var(--accent)] ring-2 ring-[var(--accent)]/30" : "border-[var(--surface2)]"}`}
+        className={`rounded ${selected ? "ring-2 ring-[var(--accent)] ring-offset-1 ring-offset-[var(--bg)]" : ""}`}
       >
-        {inner}
+        {card}
       </button>
     );
   }
-  return <span className="inline-block">{inner}</span>;
+  return card;
 }
 
 function RuleVal({ children }: { children: React.ReactNode }) {

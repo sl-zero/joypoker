@@ -1,0 +1,77 @@
+<h2>逼真扑克牌组件 — SVG 设计稿</h2>
+<p class="subtitle">白底圆角 · 四角落标 · 传统中央排列 · 阴影层次 · 替换当前纯文字 CardBadge</p>
+
+<div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-bottom:2rem;">
+  <div style="text-align:center;">
+    <p style="font-size:10px;color:#a1a1aa;margin-bottom:6px;">当前</p>
+    <div style="width:40px;height:56px;background:#0a1a0f;border:1px solid #1e3d20;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#f0eee6;font-family:monospace;">A♠</div>
+    <p style="font-size:9px;color:#8a9a7b;margin-top:4px;">CardBadge</p>
+  </div>
+  <div style="text-align:center;">
+    <p style="font-size:10px;color:#a1a1aa;margin-bottom:6px;">新设计</p>
+    <svg width="72" height="100" viewBox="0 0 72 100">
+      <defs><filter id="s"><feDropShadow dx="1" dy="1" stdDeviation="1.5" flood-opacity="0.18"/></filter></defs>
+      <rect x="3" y="3" width="66" height="94" rx="6" fill="#fafaf9" filter="url(#s)"/>
+      <rect x="3" y="3" width="66" height="94" rx="6" fill="none" stroke="#d4d4d4" stroke-width="0.5"/>
+      <text x="10" y="20" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif">A</text>
+      <text x="10" y="32" font-size="11" fill="#171717" font-family="serif">♠</text>
+      <text x="62" y="88" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif" text-anchor="end" transform="rotate(180,62,88)">A</text>
+      <text x="62" y="76" font-size="11" fill="#171717" font-family="serif" text-anchor="end">♠</text>
+      <text x="36" y="66" font-size="36" fill="#171717" font-family="serif" text-anchor="middle">♠</text>
+    </svg>
+    <p style="font-size:9px;color:#8a9a7b;margin-top:4px;">72×100</p>
+  </div>
+</div>
+
+<h3>花色与颜色</h3>
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">♠ 黑桃 · A、5、K</div>
+    <div class="mockup-body" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <svg width="72" height="100" viewBox="0 0 72 100"><rect x="3" y="3" width="66" height="94" rx="6" fill="#fafaf9" filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.15))"/><rect x="3" y="3" width="66" height="94" rx="6" fill="none" stroke="#d4d4d4" stroke-width="0.5"/><text x="10" y="20" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif">A</text><text x="10" y="32" font-size="11" fill="#171717" font-family="serif">♠</text><text x="36" y="68" font-size="38" fill="#171717" font-family="serif" text-anchor="middle">♠</text><text x="62" y="88" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif" text-anchor="end" transform="rotate(180,62,88)">A</text><text x="62" y="76" font-size="11" fill="#171717" font-family="serif" text-anchor="end">♠</text></svg>
+      <svg width="72" height="100" viewBox="0 0 72 100"><rect x="3" y="3" width="66" height="94" rx="6" fill="#fafaf9" filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.15))"/><rect x="3" y="3" width="66" height="94" rx="6" fill="none" stroke="#d4d4d4" stroke-width="0.5"/><text x="10" y="20" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif">5</text><text x="10" y="32" font-size="11" fill="#171717" font-family="serif">♠</text><text x="62" y="88" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif" text-anchor="end" transform="rotate(180,62,88)">5</text><text x="62" y="76" font-size="11" fill="#171717" font-family="serif" text-anchor="end">♠</text><text x="24" y="50" font-size="13" fill="#171717" font-family="serif" text-anchor="middle">♠</text><text x="48" y="50" font-size="13" fill="#171717" font-family="serif" text-anchor="middle">♠</text><text x="24" y="72" font-size="13" fill="#171717" font-family="serif" text-anchor="middle">♠</text><text x="48" y="72" font-size="13" fill="#171717" font-family="serif" text-anchor="middle">♠</text><text x="36" y="61" font-size="13" fill="#171717" font-family="serif" text-anchor="middle">♠</text></svg>
+      <svg width="72" height="100" viewBox="0 0 72 100"><rect x="3" y="3" width="66" height="94" rx="6" fill="#fafaf9" filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.15))"/><rect x="3" y="3" width="66" height="94" rx="6" fill="none" stroke="#d4d4d4" stroke-width="0.5"/><text x="10" y="20" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif">K</text><text x="10" y="32" font-size="11" fill="#171717" font-family="serif">♠</text><text x="36" y="68" font-size="38" fill="#171717" font-family="serif" text-anchor="middle">♠</text><text x="62" y="88" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif" text-anchor="end" transform="rotate(180,62,88)">K</text><text x="62" y="76" font-size="11" fill="#171717" font-family="serif" text-anchor="end">♠</text></svg>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">♥ 红心 · A、7、Q</div>
+    <div class="mockup-body" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <svg width="72" height="100" viewBox="0 0 72 100"><rect x="3" y="3" width="66" height="94" rx="6" fill="#fafaf9" filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.15))"/><rect x="3" y="3" width="66" height="94" rx="6" fill="none" stroke="#d4d4d4" stroke-width="0.5"/><text x="10" y="20" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif">A</text><text x="10" y="32" font-size="11" fill="#dc2626" font-family="serif">♥</text><text x="36" y="68" font-size="38" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="62" y="88" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif" text-anchor="end" transform="rotate(180,62,88)">A</text><text x="62" y="76" font-size="11" fill="#dc2626" font-family="serif" text-anchor="end">♥</text></svg>
+      <svg width="72" height="100" viewBox="0 0 72 100"><rect x="3" y="3" width="66" height="94" rx="6" fill="#fafaf9" filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.15))"/><rect x="3" y="3" width="66" height="94" rx="6" fill="none" stroke="#d4d4d4" stroke-width="0.5"/><text x="10" y="20" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif">7</text><text x="10" y="32" font-size="11" fill="#dc2626" font-family="serif">♥</text><text x="62" y="88" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif" text-anchor="end" transform="rotate(180,62,88)">7</text><text x="62" y="76" font-size="11" fill="#dc2626" font-family="serif" text-anchor="end">♥</text><text x="22" y="42" font-size="12" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="50" y="42" font-size="12" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="22" y="60" font-size="12" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="50" y="60" font-size="12" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="22" y="78" font-size="12" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="50" y="78" font-size="12" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="36" y="51" font-size="12" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text></svg>
+      <svg width="72" height="100" viewBox="0 0 72 100"><rect x="3" y="3" width="66" height="94" rx="6" fill="#fafaf9" filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.15))"/><rect x="3" y="3" width="66" height="94" rx="6" fill="none" stroke="#d4d4d4" stroke-width="0.5"/><text x="10" y="20" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif">Q</text><text x="10" y="32" font-size="11" fill="#dc2626" font-family="serif">♥</text><text x="36" y="68" font-size="38" fill="#dc2626" font-family="serif" text-anchor="middle">♥</text><text x="62" y="88" font-size="14" font-weight="bold" fill="#171717" font-family="sans-serif" text-anchor="end" transform="rotate(180,62,88)">Q</text><text x="62" y="76" font-size="11" fill="#dc2626" font-family="serif" text-anchor="end">♥</text></svg>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:2rem;">传统中央排列规律</h3>
+<table style="border-collapse:collapse;width:100%;max-width:500px;font-size:11px;">
+  <tr style="border-bottom:1px solid #1e3d20;"><td style="padding:5px 10px;color:#c9a44b;">点数</td><td style="padding:5px 10px;color:#c9a44b;">中央布局</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">A / J / Q / K</td><td style="padding:3px 10px;color:#a1a1aa;">大号花色居中</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">2</td><td style="padding:3px 10px;color:#a1a1aa;">上下对称各 1</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">3</td><td style="padding:3px 10px;color:#a1a1aa;">上中下各 1</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">4</td><td style="padding:3px 10px;color:#a1a1aa;">四角各 1</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">5</td><td style="padding:3px 10px;color:#a1a1aa;">四角 + 中心</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">6</td><td style="padding:3px 10px;color:#a1a1aa;">左右各 3</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">7</td><td style="padding:3px 10px;color:#a1a1aa;">左右各 3 + 顶中 1</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">8</td><td style="padding:3px 10px;color:#a1a1aa;">左右各 4 + 中 1</td></tr>
+  <tr style="border-bottom:1px solid #132a18;"><td style="padding:3px 10px;">9</td><td style="padding:3px 10px;color:#a1a1aa;">左右各 4 + 中心 1</td></tr>
+  <tr><td style="padding:3px 10px;">10</td><td style="padding:3px 10px;color:#a1a1aa;">左右各 4 + 中 2</td></tr>
+</table>
+
+<h3 style="margin-top:2rem;">组件参数</h3>
+<div class="pros-cons">
+  <div class="pros"><h4>视觉参数</h4><ul>
+    <li>比例 5:7，viewBox 0 0 72 100</li>
+    <li>白底 #fafaf9 + 0.5px #d4d4d4 边框</li>
+    <li>drop-shadow 投影 (1,1,2px,0.15)</li>
+    <li>圆角 6px</li>
+    <li>红心方片 #dc2626，黑桃梅花 #171717</li>
+  </ul></div>
+  <div class="cons"><h4>实现</h4><ul>
+    <li>单文件 SVG 组件 PlayingCard.tsx</li>
+    <li>替换 CardBadge + GameCardBadge</li>
+    <li>支持 selected/hover 状态</li>
+    <li>王用金色 + "王" 字标识</li>
+    <li>零外部依赖</li>
+  </ul></div>
+</div>
