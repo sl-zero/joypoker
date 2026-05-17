@@ -649,7 +649,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                           {p.finishedRank != null && <span>第 {p.finishedRank} 名</span>}
                           {p.userId !== session.user.id && (
                             p.hand ? (
-                              <span className="flex -space-x-5">{p.hand.map(c => <GameCardBadge key={c.id} c={c} compact />)}</span>
+                              <span className="flex flex-wrap -space-x-5">{p.hand.map(c => <GameCardBadge key={c.id} c={c} compact />)}</span>
                             ) : (
                               <span className="flex -space-x-5 items-center">
                                 {Array.from({ length: Math.min(p.handCount, 8) }).map((_, i) => (<CardBack key={i} small />))}

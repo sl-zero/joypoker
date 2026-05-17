@@ -52,6 +52,7 @@ export default function PlayingCard({
     });
   }, [suit, rank, joker, back]);
 
+  const filter = joker && joker !== "BJ" ? "grayscale(100%) brightness(0.65)" : undefined;
   return (
     <img
       src={src}
@@ -62,6 +63,7 @@ export default function PlayingCard({
       style={{
         transition: "transform 0.12s ease",
         transform: selected ? "translate(-1px, -5px)" : undefined,
+        filter,
       }}
       draggable={false}
     />
