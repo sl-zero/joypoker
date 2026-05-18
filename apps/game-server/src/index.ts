@@ -19,7 +19,7 @@ import {
 import { emitGameState, emitPresence, type RuntimeRoom } from "./gameBroadcast";
 
 const PORT = Number(process.env.PORT) || 4000;
-const WEB_ORIGIN = process.env.WEB_ORIGIN ?? "http://localhost:3000";
+const WEB_ORIGIN = ["http://localhost:3000", "http://10.243.40.171:3000"];
 const WEB_API_URL = process.env.WEB_API_URL ?? "http://localhost:3000";
 const INTERNAL_SECRET = process.env.INTERNAL_GAME_SECRET ?? "";
 
