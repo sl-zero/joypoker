@@ -427,7 +427,6 @@ export function RoomExperience({ roomId }: { roomId: string }) {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-8">
-      <div className="text-xs text-red-400 mb-2 border border-red-400 p-2">DEBUG: room={String(room?.name)} gs={gs ? "yes" : "no"} isDz={String(isDz)} isSy={String(isSy)} isBj={String(isBj)} isTh={String(isTh)}</div>
       <div className="flex flex-wrap items-baseline justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">{room.name ?? "房间"}</h1>
