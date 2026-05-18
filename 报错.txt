@@ -1,0 +1,21 @@
+Console Error
+
+
+[socket] connect_error: "websocket error"
+
+app/rooms/[roomId]/RoomExperience.tsx (348:17) @ RoomExperience.useEffect
+
+
+  346 |       });
+  347 |       s.on("connect_error", (err) => {
+> 348 |         console.error("[socket] connect_error:", err.message);
+      |                 ^
+  349 |       });
+  350 |       s.on("gameState", (st: unknown) => {
+  351 |         console.log("[socket] gameState received", st && typeof st === "object" && "phase" in st ? (st as any).phase : "no phase");
+Call Stack
+13
+
+Show 12 ignore-listed frame(s)
+RoomExperience.useEffect
+app/rooms/[roomId]/RoomExperience.tsx (348:17)

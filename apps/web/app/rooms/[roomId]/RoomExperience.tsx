@@ -334,7 +334,7 @@ export function RoomExperience({ roomId }: { roomId: string }) {
       if (cancelled || !tokRes.ok) return;
       const url = process.env.NEXT_PUBLIC_SOCKET_URL ?? "http://localhost:4000";
       console.log("[socket] connecting to", url, "token:", tok.token?.slice(0, 20) + "...");
-      const s = io(url, { auth: { token: tok.token }, transports: ["websocket"] });
+      const s = io(url, { auth: { token: tok.token } });
       if (cancelled) {
         s.disconnect();
         return;

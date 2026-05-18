@@ -19,12 +19,11 @@ import {
 import { emitGameState, emitPresence, type RuntimeRoom } from "./gameBroadcast";
 
 const PORT = Number(process.env.PORT) || 4000;
-const WEB_ORIGIN = ["http://localhost:3000", "http://10.243.40.171:3000"];
 const WEB_API_URL = process.env.WEB_API_URL ?? "http://localhost:3000";
 const INTERNAL_SECRET = process.env.INTERNAL_GAME_SECRET ?? "";
 
 const app = express();
-app.use(cors({ origin: WEB_ORIGIN }));
+app.use(cors({ origin: true }));
 app.use(express.json());
 app.get("/health", (_req, res) => res.json({ ok: true }));
 app.get("/", (_req, res) =>
@@ -38,7 +37,7 @@ app.get("/", (_req, res) =>
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: WEB_ORIGIN, credentials: true },
+  cors: { origin: true, credentials: true },
 });
 
 type SocketAuth = { userId: string; roomId: string; name: string | null };
