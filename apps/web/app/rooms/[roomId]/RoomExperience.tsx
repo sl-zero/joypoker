@@ -333,7 +333,6 @@ export function RoomExperience({ roomId }: { roomId: string }) {
       const tok = await tokRes.json();
       if (cancelled || !tokRes.ok) return;
       const url = process.env.NEXT_PUBLIC_SOCKET_URL ?? "http://localhost:4000";
-      console.log("[socket] connecting to", url, "token:", tok.token?.slice(0, 20) + "...");
       const s = io(url, { auth: { token: tok.token } });
       if (cancelled) {
         s.disconnect();
@@ -341,14 +340,9 @@ export function RoomExperience({ roomId }: { roomId: string }) {
       }
       socketRef.current = s;
       s.on("connect", () => {
-        console.log("[socket] connected, emitting joinRoom");
         s.emit("joinRoom");
       });
-      s.on("connect_error", (err) => {
-        console.error("[socket] connect_error:", err.message);
-      });
       s.on("gameState", (st: unknown) => {
-        console.log("[socket] gameState received", st && typeof st === "object" && "phase" in st ? (st as any).phase : "no phase");
         setGameState(st as GameStateUnion);
         setSySelected([]);
         setDzSelected([]);
