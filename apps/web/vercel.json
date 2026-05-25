@@ -1,0 +1,5 @@
+{
+  "installCommand": "cd ../.. && npm install",
+  "buildCommand": "cd ../.. && npm run build -w @poker/cards-core && npm run build -w @poker/rules-schema && npx prisma generate --schema=apps/web/prisma/schema.prisma && npm run build -w @poker/web",
+  "outputDirectory": ".next"
+}
