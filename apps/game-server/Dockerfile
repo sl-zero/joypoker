@@ -16,7 +16,5 @@ RUN npx prisma generate --schema=apps/web/prisma/schema.prisma
 RUN npm run build -w @poker/game-server
 
 ENV NODE_ENV=production
-ENV PORT=8080
 
-EXPOSE 8080
 CMD ["node", "apps/game-server/dist/index.js"]
