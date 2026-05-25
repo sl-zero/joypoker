@@ -1,0 +1,20 @@
+app = "joypoker-game"
+primary_region = "nrt"
+
+[build]
+  dockerfile = "apps/game-server/Dockerfile"
+
+[env]
+  PORT = "8080"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls"]
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
