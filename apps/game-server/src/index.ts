@@ -266,6 +266,17 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("double", () => {
+    const rt = rooms.get(auth.roomId);
+    if (!rt?.blackjack) return;
+    const r = rt.blackjack.double(auth.userId);
+    if (!r.ok) socket.emit("errorMsg", { message: r.error });
+    emitGameState(io, auth.roomId, rt);
+    if (rt.blackjack.phase === "payout" && rt.blackjack.lastPayout) {
+      void persistHand(auth.roomId, rt.blackjack.lastPayout, rt.ruleSnapshot);
+    }
+  });
+
   socket.on("split", () => {
     const rt = rooms.get(auth.roomId);
     if (!rt?.blackjack) return;

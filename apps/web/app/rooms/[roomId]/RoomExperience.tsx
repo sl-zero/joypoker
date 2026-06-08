@@ -573,6 +573,13 @@ export function RoomExperience({ roomId }: { roomId: string }) {
                   >
                     停牌
                   </button>
+                  <button
+                    type="button"
+                    className="rounded-lg bg-amber-500 px-4 py-2 font-medium text-white"
+                    onClick={() => socketRef.current?.emit("double")}
+                  >
+                    加倍
+                  </button>
                   {gs.players.find((x) => x.userId === session.user.id)?.canSplit && (
                     <button
                       type="button"

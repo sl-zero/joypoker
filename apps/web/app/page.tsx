@@ -44,12 +44,7 @@ export default async function HomePage() {
       <section className="rounded-xl border border-[var(--surface2)] bg-[var(--surface)] p-6 text-sm text-[var(--muted)]">
         <p className="font-medium text-[var(--text)]">新手提示</p>
         <ul className="mt-2 list-inside list-disc space-y-1">
-          <li>默认使用 SQLite（<code className="text-[var(--text)]">apps/web/.env</code> 中 DATABASE_URL）；若改 PostgreSQL 再配库与迁移</li>
-          <li>
-            终端 1：<code className="text-[var(--text)]">npm run dev:web</code>；终端 2：
-            <code className="text-[var(--text)]">npm run dev:game</code>
-          </li>
-          <li>建房时选择玩法类型；人数须符合该玩法（如斗地主 3/4 人、上游 2/4 人）。</li>
+          <li>建房时选择玩法类型；人数须符合该玩法（如斗地主 3/4 人、上游 2/4 人）。如房间人数已满可点击观战。</li>
         </ul>
       </section>
     </main>

@@ -2,16 +2,20 @@
 
 在线创建扑克牌局、自定义地方规则、实时联机对战。支持二十一点、斗地主、德州扑克、上游四种玩法。
 
+> **在线体验**：[joypoker-web.vercel.app](https://joypoker-web.vercel.app)
+
 ## 技术栈
 
 | 层 | 技术 |
 |----|------|
-| 前端 | Next.js 16 (App Router) + React 19 + Tailwind CSS v4 |
-| 认证 | next-auth (Credentials Provider + JWT Session) |
-| 游戏服务 | Node.js + Socket.IO |
-| 数据库 | SQLite + Prisma ORM |
-| 类型校验 | Zod + TypeScript |
-| 项目结构 | npm Workspaces Monorepo |
+| 前端 | Next.js 15 (App Router) + React 19 + Tailwind CSS v4 |
+| 认证 | NextAuth v5 (Credentials + JWT Session) |
+| 游戏服务 | Node.js + Express + Socket.IO |
+| 数据库 | SQLite（本地）/ PostgreSQL（生产，Supabase） |
+| ORM | Prisma |
+| 校验 | Zod + TypeScript |
+| 部署 | Vercel（前端）+ Render（游戏服）+ Supabase（DB） |
+| 结构 | npm Workspaces Monorepo |
 
 ## 项目结构
 

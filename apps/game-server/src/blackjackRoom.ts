@@ -12,9 +12,9 @@ export type BJPhase = "lobby" | "playerTurn" | "dealerTurn" | "payout";
 export interface BJPlayer {
   userId: string;
   name: string;
-  /** 多手牌（分牌后有多叠） */
   hands: Card[][];
   handDone: boolean[];
+  handDoubled: boolean[];
   activeHandIndex: number;
   splitsDone: number;
   done: boolean;
@@ -86,6 +86,7 @@ export class BlackjackRoom {
         name: m.name ?? "玩家",
         hands: [h0],
         handDone: [false],
+        handDoubled: [false],
         activeHandIndex: 0,
         splitsDone: 0,
         done: false,
@@ -164,6 +165,20 @@ export class BlackjackRoom {
     return { ok: true };
   }
 
+  double(userId: string): { ok: boolean; error?: string } {
+    if (this.phase !== "playerTurn") return { ok: false, error: "不是出牌阶段" };
+    const cur = this.currentPlayer();
+    if (!cur || cur.userId !== userId) return { ok: false, error: "未轮到你" };
+    if (cur.done) return { ok: false, error: "你已结束" };
+    if (cur.handDone[cur.activeHandIndex]) return { ok: false, error: "该手已结束" };
+    const h = this.activeHand(cur);
+    if (h.length !== 2) return { ok: false, error: "仅有两张牌时可加倍" };
+    h.push(this.draw());
+    cur.handDoubled[cur.activeHandIndex] = true;
+    this.finishActiveHand(cur);
+    return { ok: true };
+  }
+
   split(userId: string): { ok: boolean; error?: string } {
     if (this.phase !== "playerTurn") return { ok: false, error: "不是出牌阶段" };
     const cur = this.currentPlayer();
@@ -180,6 +195,7 @@ export class BlackjackRoom {
     const d2 = this.draw();
     cur.hands.splice(i, 1, [h[0], d1], [h[1], d2]);
     cur.handDone.splice(i, 1, false, false);
+    cur.handDoubled.splice(i, 1, false, false);
     cur.splitsDone++;
     for (let j = i; j <= i + 1; j++) {
       const t = blackjackHandValue(cur.hands[j]).total;
@@ -272,7 +288,8 @@ export class BlackjackRoom {
           p.hands.length === 1 &&
           hand.length === 2 &&
           blackjackHandValue(hand).total === 21;
-        sum += this.handPayoutVsDealer(hand, d, dealerBust, dealerBJ, mult, naturalBj);
+        const base = this.handPayoutVsDealer(hand, d, dealerBust, dealerBJ, mult, naturalBj);
+        sum += p.handDoubled[hi] ? base * 2 : base;
       }
       out[p.userId] = sum;
     }
